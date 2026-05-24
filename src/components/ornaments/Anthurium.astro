@@ -1,0 +1,66 @@
+---
+interface Props {
+  size?: number | string;
+  class?: string;
+  variant?: 'red' | 'burgundy';
+  flip?: boolean;
+}
+const { size = 120, class: className = '', variant = 'red', flip = false } = Astro.props;
+const spathe = variant === 'red' ? '#b51e2b' : '#7a1d27';
+const spatheDeep = variant === 'red' ? '#7a141d' : '#4a0f17';
+const spatheHi = variant === 'red' ? '#d63a48' : '#a02834';
+---
+
+<svg
+  viewBox="0 0 140 220"
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  class={`anthurium ${className}`}
+  style={flip ? 'transform: scaleX(-1)' : ''}
+  aria-hidden="true"
+>
+  <defs>
+    <radialGradient id="spatheGrad" cx="55%" cy="40%" r="60%">
+      <stop offset="0%" stop-color={spatheHi} />
+      <stop offset="55%" stop-color={spathe} />
+      <stop offset="100%" stop-color={spatheDeep} />
+    </radialGradient>
+    <linearGradient id="spadixGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f4d57e" />
+      <stop offset="100%" stop-color="#b8893c" />
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(0,0)">
+    <path d="M 70 218 Q 68 175 66 130 Q 64 115 60 100"
+          stroke="#3d5a2e" stroke-width="2.2" fill="none" stroke-linecap="round" />
+
+    <path d="M 64 138 Q 30 130 14 108 Q 8 88 20 86 Q 42 92 64 122 Z"
+          fill="#3d5a2e" />
+    <path d="M 64 130 Q 38 124 18 100" stroke="#1f3a1d" stroke-width="0.7" fill="none" opacity="0.7" />
+
+    <path d="M 70 130 Q 100 118 122 90 Q 132 70 120 66 Q 98 70 76 110 Z"
+          fill="#2d4622" />
+    <path d="M 72 122 Q 96 110 118 80" stroke="#1f3a1d" stroke-width="0.7" fill="none" opacity="0.6" />
+
+    <path d="
+        M 60 110
+        Q 22 78 18 42
+        Q 22 12 50 24
+        Q 60 30 60 42
+        Q 60 30 70 24
+        Q 98 12 102 42
+        Q 98 78 60 110 Z"
+      fill="url(#spatheGrad)" stroke={spatheDeep} stroke-width="0.7" />
+    <path d="M 58 90 Q 38 70 28 48" stroke={spatheHi} stroke-width="0.8" fill="none" opacity="0.55" stroke-linecap="round" />
+    <path d="M 62 90 Q 82 70 92 48" stroke={spatheHi} stroke-width="0.6" fill="none" opacity="0.4" stroke-linecap="round" />
+
+    <path d="M 62 60 Q 58 30 56 8" stroke="url(#spadixGrad)" stroke-width="5" fill="none" stroke-linecap="round" />
+    <circle cx="56" cy="8" r="2.4" fill="#f4d57e" />
+  </g>
+</svg>
+
+<style>
+  .anthurium { display: block; }
+</style>

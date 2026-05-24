@@ -1,0 +1,144 @@
+---
+import { Image } from 'astro:assets';
+import { schedule } from '../data/schedule';
+import mesa from '../assets/mesa.png';
+---
+
+<section class="schedule" aria-label="Programação do evento">
+  <div class="container schedule__inner">
+    <div class="schedule__content">
+      <h2 class="schedule__title">
+        <span class="schedule__title-line">Programação</span>
+        <span class="schedule__title-line schedule__title-line--small">do evento</span>
+      </h2>
+
+      <ol class="schedule__list">
+        {schedule.map((item) => (
+          <li class="schedule__item">
+            <span class="schedule__time">{item.time}</span>
+            <span class="schedule__label">{item.title}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+
+    <div class="schedule__illustration" aria-hidden="true">
+      <Image src={mesa} alt="" widths={[300, 480, 720]} sizes="(max-width: 760px) 75vw, 420px" />
+    </div>
+  </div>
+</section>
+
+<style>
+  .schedule {
+    position: relative;
+    isolation: isolate;
+    background: #1F4517;
+    color: var(--color-cream);
+    padding-block: clamp(3rem, 7vw, 5rem);
+    overflow: hidden;
+  }
+
+  /* Grain/paper: feTurbulence em alta resolução (1024) tile-sizado em 512
+     pra supersampling (textura crisp, não pixelada). Single layer fina
+     evita o blob/tonalidade que denunciava o tile na versão anterior. */
+  .schedule::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'><filter id='n' x='0' y='0'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.96  0 0 0 0 0.93  0 0 0 0 0.86  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 512px 512px;
+    opacity: 0.65;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .schedule__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    align-items: center;
+    column-gap: clamp(1.5rem, 4vw, 3.5rem);
+    row-gap: 2.5rem;
+  }
+
+  .schedule__content {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+
+  .schedule__title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    color: var(--color-cream);
+    text-transform: uppercase;
+    letter-spacing: 0.3em;
+    line-height: 1.05;
+    font-size: clamp(1.5rem, 3.2vw, 2.1rem);
+  }
+  .schedule__title-line { display: block; }
+  .schedule__title-line--small {
+    font-size: 0.6em;
+    letter-spacing: 0.42em;
+    color: var(--color-cream);
+    opacity: 0.85;
+    margin-top: 0.55em;
+  }
+
+  .schedule__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 1.05rem;
+    font-family: var(--font-serif);
+  }
+
+  .schedule__item {
+    display: grid;
+    grid-template-columns: 4rem 1fr;
+    align-items: baseline;
+    gap: 1.5rem;
+    font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+    border-bottom: 1px solid rgba(244, 238, 227, 0.12);
+    padding-bottom: 0.85rem;
+  }
+  .schedule__item:last-child { border-bottom: 0; }
+
+  .schedule__time {
+    color: var(--color-cream);
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .schedule__label {
+    color: var(--color-cream);
+    opacity: 0.92;
+    font-style: italic;
+  }
+
+  .schedule__illustration {
+    justify-self: center;
+    width: 100%;
+    max-width: 420px;
+  }
+  .schedule__illustration :global(img) {
+    width: 100%;
+    height: auto;
+    /* PNG é preto-em-branco; o invert + screen vira cream-em-verde transparente */
+    filter: invert(1) brightness(1.05) sepia(0.18) saturate(0.75);
+    mix-blend-mode: screen;
+    opacity: 0.55;
+  }
+
+  @media (max-width: 760px) {
+    .schedule__inner {
+      grid-template-columns: 1fr;
+    }
+    .schedule__illustration {
+      order: -1;
+      max-width: 260px;
+    }
+  }
+</style>

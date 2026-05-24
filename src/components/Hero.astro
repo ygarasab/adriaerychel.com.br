@@ -1,0 +1,101 @@
+---
+import { Image } from 'astro:assets';
+import heroPhoto from '../assets/photos/IMG_2973.webp';
+import { couple } from '../data/content';
+---
+
+<header class="hero">
+  <div class="hero__media">
+    <Image
+      src={heroPhoto}
+      alt={`${couple.bride} e ${couple.groom}`}
+      widths={[600, 900, 1400, 2000]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="hero__img"
+    />
+    <div class="hero__overlay" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero__content">
+    <h1 class="hero__names">
+      <span class="script">{couple.displayOrder[0]}</span>
+      <span class="hero__amp">&amp;</span>
+      <span class="script">{couple.displayOrder[1]}</span>
+    </h1>
+  </div>
+</header>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    align-items: end;
+    justify-items: center;
+    overflow: hidden;
+    color: #f9f5ec;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+  }
+
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, 0) 35%, rgba(18, 35, 24, 0.35) 100%);
+  }
+
+  .hero__content {
+    position: relative;
+    text-align: center;
+    padding: 0 1.5rem clamp(2.5rem, 8vh, 5rem);
+    animation: fade-up 1.2s ease 0.3s both;
+  }
+
+  .hero__names {
+    font-family: var(--font-script);
+    font-size: clamp(4rem, 14vw, 8.5rem);
+    line-height: 0.9;
+    color: #fff;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .hero__amp {
+    font-family: var(--font-script);
+    font-size: 0.55em;
+    opacity: 0.85;
+    line-height: 0.5;
+  }
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (min-width: 700px) {
+    .hero__names {
+      flex-direction: row;
+      gap: 0.6em;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero__amp {
+      font-size: 0.7em;
+    }
+  }
+</style>

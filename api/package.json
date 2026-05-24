@@ -1,0 +1,12 @@
+{
+  "name": "adriaerychel-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@azure/cosmos": "^4.2.0"
+  }
+}

@@ -1,0 +1,101 @@
+:root {
+  --color-burgundy: #6b1922;
+  --color-burgundy-dark: #4a0f17;
+  --color-gold: #b8893c;
+  --color-gold-soft: #d4a857;
+  --color-forest: #1f3a26;
+  --color-forest-dark: #122318;
+  --color-cream: #f4eee3;
+  --color-cream-soft: #ebe3d3;
+  --color-paper: #f9f5ec;
+  --color-ink: #2a2118;
+  --color-ink-soft: #5a4d3e;
+
+  --font-script: 'Italianno', 'Pinyon Script', cursive;
+  --font-serif: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  --max-w: 64rem;
+  --shadow-soft: 0 10px 40px -12px rgba(74, 15, 23, 0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-serif);
+  color: var(--color-ink);
+  background: var(--color-paper);
+  line-height: 1.55;
+  font-size: 1.0625rem;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, picture, svg { display: block; max-width: 100%; height: auto; }
+
+a { color: var(--color-burgundy); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+button {
+  font: inherit;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+h1, h2, h3, h4 { font-weight: 500; line-height: 1.15; }
+
+.script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+}
+
+.eyebrow {
+  font-family: var(--font-serif);
+  text-transform: uppercase;
+  letter-spacing: 0.32em;
+  font-size: 0.78rem;
+  color: var(--color-ink-soft);
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+section { padding-block: clamp(3rem, 8vw, 6rem); }
+
+.divider-ornament {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  color: var(--color-gold);
+  margin-block: 1rem;
+}
+.divider-ornament::before,
+.divider-ornament::after {
+  content: '';
+  height: 1px;
+  width: 3rem;
+  background: currentColor;
+  opacity: 0.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

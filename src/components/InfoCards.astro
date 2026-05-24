@@ -1,0 +1,206 @@
+---
+import { Image } from 'astro:assets';
+import { event } from '../data/content';
+import Flourish from './ornaments/Flourish.astro';
+import anthurium from '../assets/flowers/anthurium.webp';
+import callaLily from '../assets/flowers/calla-lily.webp';
+import pinkLily from '../assets/flowers/pink-lily.webp';
+---
+
+<section class="info" aria-label="Informações principais">
+  <div class="info__panel">
+    <div class="container info__grid">
+      <article class="card">
+        <h3 class="card__title">
+          <Flourish width={120} class="card__flourish" />
+          <span class="card__title-text">Confirme sua presença</span>
+          <Flourish width={120} class="card__flourish" flip />
+        </h3>
+
+        <div class="card__flower card__flower--anthurium">
+          <Image src={anthurium} alt="" widths={[200, 320, 440]} sizes="(min-width: 760px) 22vw, 50vw" />
+        </div>
+
+        <p class="card__desc">Clique neste link e confirme sua presença.</p>
+
+        <button class="card__cta" type="button" data-rsvp-trigger>
+          Confirmar presença
+        </button>
+      </article>
+
+      <article class="card">
+        <h3 class="card__title">
+          <Flourish width={120} class="card__flourish" />
+          <span class="card__title-text">Dress Code</span>
+          <Flourish width={120} class="card__flourish" flip />
+        </h3>
+
+        <div class="card__flower card__flower--calla">
+          <Image src={callaLily} alt="" widths={[180, 236]} sizes="(min-width: 760px) 22vw, 50vw" />
+        </div>
+
+        <p class="card__desc">
+          Traje: <strong>{event.dressCode}</strong><br />
+          Clique para saber mais
+        </p>
+
+        <a class="card__cta" href="/dress-code">Ver detalhes</a>
+      </article>
+
+      <article class="card">
+        <h3 class="card__title">
+          <Flourish width={120} class="card__flourish" />
+          <span class="card__title-text">Local</span>
+          <Flourish width={120} class="card__flourish" flip />
+        </h3>
+
+        <div class="card__flower card__flower--lily">
+          <Image src={pinkLily} alt="" widths={[200, 320, 440]} sizes="(min-width: 760px) 22vw, 50vw" />
+        </div>
+
+        <p class="card__desc">
+          <strong>{event.venue.name}</strong><br />
+          {event.venue.address}
+        </p>
+
+        <a class="card__cta" href={event.venue.mapsUrl} target="_blank" rel="noopener">
+          Ver no mapa
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Tenda: listras verticais grossas cobrem todo o background da section.
+     Burgundy mais saturado e cream-soft alternando em 36px de largura. */
+  .info {
+    position: relative;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        var(--color-burgundy) 0 36px,
+        var(--color-cream-soft) 36px 72px
+      );
+    padding: clamp(3rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 4rem);
+    overflow: hidden;
+  }
+
+  /* Bloco interno cream estreito, com borda burgundy grossa e radius marcado.
+     Mesma textura de papel do Schedule. */
+  .info__panel {
+    position: relative;
+    isolation: isolate;
+    max-width: 72rem;
+    margin: 0 auto;
+    background: var(--color-cream);
+    border: 3px solid var(--color-burgundy);
+    border-radius: 22px;
+    box-shadow: 0 22px 50px -20px rgba(74, 15, 23, 0.5);
+    overflow: hidden;
+  }
+
+  .info__panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'><filter id='n' x='0' y='0'><feTurbulence type='fractalNoise' baseFrequency='1.4' numOctaves='2' seed='5' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.32  0 0 0 0 0.18  0 0 0 0 0.10  0 0 0 1 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 512px 512px;
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .info__grid {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: 1fr;
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .card__title {
+    display: grid;
+    gap: 0.25rem;
+    align-items: center;
+    justify-items: center;
+  }
+
+  .card__flourish {
+    width: clamp(100px, 22vw, 140px);
+    height: auto;
+    color: var(--color-gold);
+  }
+
+  .card__title-text {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(1.3rem, 2.6vw, 1.5rem);
+    color: var(--color-burgundy);
+    letter-spacing: 0.02em;
+  }
+
+  .card__flower {
+    --flower-h: clamp(220px, 24vw, 280px);
+    width: 100%;
+    height: var(--flower-h);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .card__flower :global(img) {
+    display: block;
+    width: auto;
+    max-width: 100%;
+    height: var(--img-h, var(--flower-h));
+    object-fit: contain;
+  }
+  .card__flower--lily {
+    --img-h: clamp(190px, 21vw, 240px);
+  }
+
+  .card__desc {
+    color: var(--color-ink-soft);
+    font-size: 0.96rem;
+    margin: 0;
+    line-height: 1.55;
+    max-width: 18rem;
+  }
+
+  .card__cta {
+    margin-top: auto;
+    display: inline-block;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--color-burgundy);
+    border-bottom: 1px solid var(--color-gold);
+    padding-bottom: 2px;
+    background: transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .card__cta:hover {
+    color: var(--color-burgundy-dark);
+    border-color: var(--color-burgundy);
+    text-decoration: none;
+  }
+
+  @media (min-width: 760px) {
+    .info__grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      align-items: stretch;
+    }
+  }
+</style>

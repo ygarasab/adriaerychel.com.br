@@ -1,0 +1,85 @@
+---
+interface Props {
+  size?: number | string;
+  class?: string;
+  withRose?: boolean;
+  flip?: boolean;
+}
+const { size = 220, class: className = '', withRose = true, flip = false } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 220 260"
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height={size}
+  class={`dried-spray ${className}`}
+  style={flip ? 'transform: scaleX(-1)' : ''}
+  aria-hidden="true"
+>
+  <defs>
+    <radialGradient id="rosePetal" cx="50%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#b85742" />
+      <stop offset="60%" stop-color="#8b3826" />
+      <stop offset="100%" stop-color="#5e2618" />
+    </radialGradient>
+  </defs>
+
+  <g fill="none" stroke="#a39172" stroke-width="1.1" stroke-linecap="round">
+    <path d="M 110 258 Q 100 200 86 150 Q 70 100 50 64 Q 36 38 20 18" />
+    <path d="M 86 150 Q 110 130 138 110" opacity="0.8" />
+    <path d="M 70 100 Q 100 86 150 78" opacity="0.8" />
+    <path d="M 50 64 Q 84 50 130 42" opacity="0.7" />
+    <path d="M 86 150 Q 70 162 56 178" opacity="0.6" />
+  </g>
+
+  <g stroke="#7d6b48" stroke-width="0.5" fill="#ede2c8">
+    <circle cx="20" cy="18" r="3.4" />
+    <circle cx="26" cy="14" r="2.6" />
+    <circle cx="14" cy="22" r="2.6" />
+    <circle cx="28" cy="22" r="2" />
+    <circle cx="12" cy="14" r="1.8" />
+    <circle cx="32" cy="10" r="1.8" />
+
+    <circle cx="138" cy="110" r="3.2" />
+    <circle cx="144" cy="106" r="2.4" />
+    <circle cx="132" cy="116" r="2.4" />
+    <circle cx="148" cy="114" r="1.8" />
+
+    <circle cx="150" cy="78" r="3" />
+    <circle cx="156" cy="84" r="2.4" />
+    <circle cx="144" cy="74" r="2.2" />
+    <circle cx="158" cy="74" r="1.8" />
+
+    <circle cx="130" cy="42" r="3" />
+    <circle cx="136" cy="48" r="2.2" />
+    <circle cx="124" cy="38" r="2.2" />
+    <circle cx="140" cy="38" r="1.8" />
+
+    <circle cx="56" cy="178" r="2.6" />
+    <circle cx="62" cy="184" r="2" />
+    <circle cx="50" cy="184" r="2" />
+
+    <circle cx="86" cy="150" r="2.6" />
+    <circle cx="82" cy="156" r="2" />
+  </g>
+
+  {withRose && (
+    <g transform="translate(98 196) rotate(-12)">
+      <path
+        d="M -18 0 Q -22 -14 -10 -19 Q 2 -23 14 -18 Q 22 -10 19 0 Q 22 10 14 16 Q 2 21 -10 18 Q -22 14 -18 0 Z"
+        fill="url(#rosePetal)" stroke="#5e2618" stroke-width="0.6" />
+      <path
+        d="M -10 -3 Q -13 -12 -3 -14 Q 6 -12 10 -3 Q 12 6 5 10 Q -4 11 -10 4 Z"
+        fill="#8b3826" stroke="#5e2618" stroke-width="0.4" />
+      <path
+        d="M -4 -2 Q -6 -7 0 -8 Q 5 -6 6 -1 Q 7 4 2 5 Q -3 4 -4 -2 Z"
+        fill="#6e2d1c" stroke="#3e160d" stroke-width="0.3" />
+      <circle cx="0.5" cy="0" r="1.6" fill="#3e160d" />
+    </g>
+  )}
+</svg>
+
+<style>
+  .dried-spray { display: block; }
+</style>

@@ -1,0 +1,80 @@
+---
+import { hotels } from '../data/hotels';
+---
+
+<section class="hotels">
+  <div class="container">
+    <h2 class="hotels__title script">Relação de hotéis para hospedagem</h2>
+    <div class="divider-ornament">
+      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
+        <path d="M12 2 L13 11 L22 12 L13 13 L12 22 L11 13 L2 12 L11 11 Z" fill="currentColor" opacity="0.8" />
+      </svg>
+    </div>
+
+    <ul class="hotels__grid">
+      {hotels.map((h) => (
+        <li class="hotel">
+          <h3 class="hotel__name">{h.name}</h3>
+          <p class="hotel__address">{h.address}</p>
+          <p class="hotel__phone">
+            <a href={`tel:${h.phone.replace(/\D/g, '')}`}>{h.phone}</a>
+          </p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hotels {
+    background: var(--color-burgundy);
+    color: var(--color-cream);
+  }
+
+  .hotels__title {
+    text-align: center;
+    font-size: clamp(2.5rem, 6vw, 3.75rem);
+    color: var(--color-cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .hotels__grid {
+    list-style: none;
+    padding: 0;
+    margin-top: 2.5rem;
+    display: grid;
+    gap: 1.5rem 2.5rem;
+    grid-template-columns: 1fr;
+  }
+
+  .hotel { padding-block: 0.25rem; }
+
+  .hotel__name {
+    font-family: var(--font-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.85rem;
+    color: var(--color-gold-soft);
+    margin-bottom: 0.35rem;
+  }
+
+  .hotel__address {
+    font-size: 0.92rem;
+    color: rgba(244, 238, 227, 0.9);
+    margin-bottom: 0.25rem;
+  }
+
+  .hotel__phone a {
+    color: var(--color-cream);
+    font-size: 0.92rem;
+    opacity: 0.85;
+  }
+  .hotel__phone a:hover { opacity: 1; text-decoration: underline; }
+
+  @media (min-width: 600px) {
+    .hotels__grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (min-width: 900px) {
+    .hotels__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>

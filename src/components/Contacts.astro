@@ -1,0 +1,144 @@
+---
+import { Image } from 'astro:assets';
+import { contacts } from '../data/content';
+import logo from '../assets/logo-ar.png';
+
+const items = [contacts.rychel, contacts.adria];
+
+function telHref(phone: string) {
+  return 'tel:' + phone.replace(/\D/g, '');
+}
+---
+
+<section class="contacts">
+  <div class="container contacts__inner">
+    <h2 class="contacts__title">
+      <span>Entre em</span>
+      <span>contato</span>
+    </h2>
+
+    <div class="contacts__people">
+      {items.map((person) => (
+        <div class="person">
+          <p class="person__name">{person.name}</p>
+          <p class="person__line">
+            <svg class="person__icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6.6 10.8a14.5 14.5 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11.4 11.4 0 0 0 3.6.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.6 1 1 0 0 1-.25 1z" fill="currentColor" />
+            </svg>
+            <a href={telHref(person.phone)}>{person.phone}</a>
+          </p>
+          <p class="person__line">
+            <svg class="person__icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1 2.4V18h16V7.4l-8 5z" fill="currentColor" />
+            </svg>
+            <a href={`mailto:${person.email}`}>{person.email}</a>
+          </p>
+        </div>
+      ))}
+    </div>
+
+    <Image src={logo} alt="Adria & Rychel" class="contacts__logo" widths={[100, 160, 220]} sizes="(min-width: 900px) 110px, 130px" />
+  </div>
+</section>
+
+<style>
+  .contacts {
+    background: var(--color-paper);
+    padding-block: clamp(2rem, 5vw, 3.5rem);
+    border-top: 1px solid rgba(184, 137, 60, 0.25);
+  }
+
+  .contacts__inner {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+    align-items: center;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .contacts__title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(1.4rem, 2.2vw, 1.7rem);
+    line-height: 1.05;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-burgundy);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35em;
+    text-align: center;
+  }
+  .contacts__title span:last-child { padding-left: 0.22em; }
+
+  .contacts__people {
+    display: grid;
+    gap: 1.75rem;
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .person { display: grid; gap: 0.4rem; }
+
+  .person__name {
+    font-family: var(--font-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.9rem;
+    color: var(--color-burgundy);
+    margin: 0 0 0.2rem;
+  }
+
+  .person__line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 0.92rem;
+    color: var(--color-ink-soft);
+  }
+  .person__line a {
+    color: inherit;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .person__line a:hover {
+    color: var(--color-burgundy);
+    border-color: var(--color-gold);
+    text-decoration: none;
+  }
+
+  .person__icon {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    color: var(--color-burgundy);
+  }
+
+  .contacts__logo {
+    width: clamp(80px, 9vw, 110px);
+    height: auto;
+    justify-self: center;
+  }
+
+  @media (min-width: 900px) {
+    .contacts__inner {
+      grid-template-columns: auto 1fr auto;
+      gap: clamp(2rem, 5vw, 4rem);
+      text-align: left;
+      justify-items: stretch;
+    }
+
+    .contacts__title { text-align: left; }
+
+    .contacts__people {
+      grid-template-columns: 1fr 1fr;
+      gap: clamp(2rem, 5vw, 4rem);
+      justify-items: start;
+    }
+
+    .person { gap: 0.35rem; }
+  }
+</style>

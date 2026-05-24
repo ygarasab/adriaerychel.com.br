@@ -1,0 +1,89 @@
+---
+interface Props {
+  size?: number | string;
+  class?: string;
+}
+const { size = 140, class: className = '' } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 140 200"
+  xmlns="http://www.w3.org/2000/svg"
+  width={size}
+  height="auto"
+  class={`gypsophila ${className}`}
+  aria-hidden="true"
+>
+  <g fill="none" stroke="#9d8b66" stroke-width="0.9" stroke-linecap="round" opacity="0.85">
+    <path d="M 70 200 Q 70 160 70 110 Q 68 80 60 50" />
+    <path d="M 70 130 Q 50 110 32 96" />
+    <path d="M 70 130 Q 90 112 108 100" />
+    <path d="M 70 90 Q 56 70 42 56" />
+    <path d="M 70 90 Q 86 72 100 60" />
+    <path d="M 64 60 Q 56 44 48 32" />
+    <path d="M 60 50 Q 70 30 80 18" />
+  </g>
+
+  <g fill="#fcf6e6" stroke="#c7b58a" stroke-width="0.4">
+    <!-- Cluster topo -->
+    <circle cx="80" cy="18" r="6" />
+    <circle cx="74" cy="12" r="4.4" />
+    <circle cx="86" cy="12" r="4" />
+    <circle cx="70" cy="22" r="3.8" />
+    <circle cx="88" cy="24" r="4.2" />
+    <circle cx="82" cy="28" r="3.2" />
+    <circle cx="76" cy="6" r="3.4" />
+
+    <!-- Cluster esquerda alto -->
+    <circle cx="48" cy="32" r="5" />
+    <circle cx="42" cy="28" r="3.8" />
+    <circle cx="54" cy="28" r="3.4" />
+    <circle cx="44" cy="38" r="3.2" />
+    <circle cx="50" cy="40" r="2.8" />
+
+    <!-- Cluster direita alto -->
+    <circle cx="100" cy="60" r="5.4" />
+    <circle cx="94" cy="56" r="3.8" />
+    <circle cx="106" cy="56" r="3.4" />
+    <circle cx="102" cy="68" r="3.4" />
+    <circle cx="96" cy="66" r="2.6" />
+    <circle cx="110" cy="64" r="3" />
+
+    <!-- Cluster esquerda baixo -->
+    <circle cx="42" cy="56" r="4.6" />
+    <circle cx="36" cy="50" r="3.4" />
+    <circle cx="48" cy="52" r="3" />
+    <circle cx="38" cy="62" r="3" />
+    <circle cx="46" cy="62" r="2.6" />
+
+    <!-- Cluster centro -->
+    <circle cx="70" cy="90" r="4.4" />
+    <circle cx="64" cy="86" r="3.2" />
+    <circle cx="76" cy="86" r="3" />
+    <circle cx="68" cy="96" r="2.8" />
+
+    <!-- Cluster meio esquerda -->
+    <circle cx="32" cy="96" r="5" />
+    <circle cx="26" cy="92" r="3.4" />
+    <circle cx="38" cy="92" r="3.4" />
+    <circle cx="28" cy="102" r="3" />
+    <circle cx="36" cy="104" r="2.6" />
+
+    <!-- Cluster meio direita -->
+    <circle cx="108" cy="100" r="5.2" />
+    <circle cx="102" cy="96" r="3.6" />
+    <circle cx="114" cy="96" r="3.4" />
+    <circle cx="104" cy="108" r="3" />
+    <circle cx="112" cy="108" r="2.8" />
+
+    <!-- Cluster baixo centro -->
+    <circle cx="70" cy="130" r="4.6" />
+    <circle cx="64" cy="126" r="3.2" />
+    <circle cx="76" cy="126" r="3" />
+    <circle cx="68" cy="138" r="2.8" />
+  </g>
+</svg>
+
+<style>
+  .gypsophila { display: block; }
+</style>

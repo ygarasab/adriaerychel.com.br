@@ -1,0 +1,89 @@
+---
+import { Image } from 'astro:assets';
+import bg from '../assets/photos/IMG_2657.webp';
+import { gift } from '../data/content';
+---
+
+<section class="gift">
+  <div class="gift__bg" aria-hidden="true">
+    <Image src={bg} alt="" widths={[800, 1400, 2000]} sizes="100vw" />
+  </div>
+  <div class="gift__overlay" aria-hidden="true"></div>
+  <div class="container gift__content">
+    <p class="gift__title">{gift.title}</p>
+    <p class="gift__body">{gift.body}</p>
+    <a class="gift__cta" href={gift.ctaUrl}>{gift.ctaLabel}</a>
+  </div>
+</section>
+
+<style>
+  .gift {
+    position: relative;
+    color: var(--color-cream);
+    overflow: hidden;
+    padding-block: clamp(5rem, 12vw, 8rem);
+    min-height: clamp(420px, 60vh, 620px);
+    display: grid;
+    align-items: center;
+  }
+
+  .gift__bg {
+    position: absolute;
+    inset: 0;
+  }
+  .gift__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .gift__overlay {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at center, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.15) 70%, rgba(0, 0, 0, 0.05) 100%);
+  }
+
+  .gift__content {
+    position: relative;
+    text-align: center;
+    max-width: 44rem;
+    margin-inline: auto;
+    text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
+  }
+
+  .gift__title {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-size: clamp(2rem, 4vw, 2.9rem);
+    color: var(--color-cream);
+    line-height: 1.3;
+    margin: 0 0 1.75rem;
+  }
+
+  .gift__body {
+    color: rgba(244, 238, 227, 0.95);
+    font-family: var(--font-serif);
+    font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+    line-height: 1.7;
+    margin-bottom: 2.25rem;
+  }
+
+  .gift__cta {
+    display: inline-block;
+    padding: 0.85rem 2rem;
+    border: 1px solid var(--color-gold-soft);
+    color: var(--color-cream);
+    font-family: var(--font-serif);
+    font-style: italic;
+    letter-spacing: 0.1em;
+    text-shadow: none;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  .gift__cta:hover {
+    background: var(--color-gold-soft);
+    color: var(--color-forest-dark);
+    text-decoration: none;
+  }
+</style>
