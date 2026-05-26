@@ -4,6 +4,12 @@
 <dialog class="rsvp" id="rsvp-dialog" aria-labelledby="rsvp-title">
   <button class="rsvp__close" type="button" data-rsvp-close aria-label="Fechar">×</button>
 
+  <div class="rsvp__thanks" id="rsvp-thanks" hidden role="status" aria-live="polite">
+    <h2 class="rsvp__title script" id="rsvp-thanks-title">Obrigado!</h2>
+    <p class="rsvp__thanks-body" id="rsvp-thanks-body"></p>
+    <button class="rsvp__submit" type="button" data-rsvp-close>Fechar</button>
+  </div>
+
   <form class="rsvp__form" id="rsvp-form" novalidate>
     <h2 class="rsvp__title script" id="rsvp-title">Confirme sua presença</h2>
     <p class="rsvp__hint">Pedimos que cada convidado preencha individualmente.</p>
@@ -67,7 +73,8 @@
     backdrop-filter: blur(4px);
   }
 
-  .rsvp__form {
+  .rsvp__form,
+  .rsvp__thanks {
     background: var(--color-paper);
     padding: 2rem 1.75rem;
     border-radius: 4px;
@@ -75,6 +82,25 @@
     box-shadow: var(--shadow-soft);
     position: relative;
   }
+
+  .rsvp__thanks {
+    text-align: center;
+    display: grid;
+    gap: 1rem;
+    place-items: center;
+  }
+  .rsvp__thanks[hidden] { display: none; }
+
+  .rsvp__thanks .rsvp__title { margin-bottom: 0; }
+
+  .rsvp__thanks-body {
+    font-size: 1.1rem;
+    color: var(--color-ink);
+    line-height: 1.45;
+    max-width: 26rem;
+  }
+
+  .rsvp__thanks .rsvp__submit { max-width: 16rem; }
 
   .rsvp__close {
     position: absolute;
@@ -100,26 +126,27 @@
   .rsvp__hint {
     text-align: center;
     color: var(--color-ink-soft);
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-bottom: 1.25rem;
     font-style: italic;
   }
 
-  .field { display: grid; gap: 0.35rem; margin-bottom: 0.9rem; }
+  .field { display: grid; gap: 0.4rem; margin-bottom: 1rem; }
   .field--name { position: relative; }
 
   .field__label {
     font-family: var(--font-serif);
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-size: 0.72rem;
+    font-size: 0.88rem;
     color: var(--color-burgundy);
   }
 
   .field__input {
     font: inherit;
     font-family: var(--font-serif);
-    padding: 0.6rem 0.75rem;
+    font-size: 1.05rem;
+    padding: 0.7rem 0.85rem;
     border: 1px solid rgba(184, 137, 60, 0.5);
     border-radius: 3px;
     background: #fff;
@@ -131,8 +158,8 @@
     border-color: var(--color-gold);
   }
 
-  .field--group { border: 0; padding: 0; margin: 0 0 1rem; display: grid; gap: 0.4rem; }
-  .radio { display: flex; gap: 0.5rem; align-items: center; font-size: 0.95rem; }
+  .field--group { border: 0; padding: 0; margin: 0 0 1rem; display: grid; gap: 0.5rem; }
+  .radio { display: flex; gap: 0.55rem; align-items: center; font-size: 1.05rem; }
 
   .rsvp__suggest {
     position: absolute;
@@ -151,9 +178,9 @@
     z-index: 10;
   }
   .rsvp__suggest li {
-    padding: 0.5rem 0.75rem;
+    padding: 0.55rem 0.85rem;
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     color: var(--color-ink);
   }
   .rsvp__suggest li[aria-selected="true"],
@@ -163,7 +190,7 @@
   }
 
   .rsvp__name-help {
-    font-size: 0.8rem;
+    font-size: 0.95rem;
     min-height: 1.1em;
     color: var(--color-ink-soft);
     font-style: italic;
@@ -174,13 +201,13 @@
   .rsvp__submit {
     width: 100%;
     margin-top: 0.5rem;
-    padding: 0.85rem 1rem;
+    padding: 1rem 1rem;
     background: var(--color-burgundy);
     color: var(--color-cream);
     font-family: var(--font-serif);
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    font-size: 0.85rem;
+    font-size: 1rem;
     border-radius: 3px;
     transition: background 0.2s ease;
   }
@@ -190,7 +217,7 @@
   .rsvp__feedback {
     margin-top: 1rem;
     text-align: center;
-    font-size: 0.95rem;
+    font-size: 1.05rem;
     min-height: 1.4em;
   }
   .rsvp__feedback.is-ok { color: var(--color-forest); font-style: italic; }
@@ -215,10 +242,47 @@
     const guestIdInput = document.getElementById('rsvp-guest-id') as HTMLInputElement | null;
     const suggestList = document.getElementById('rsvp-suggest') as HTMLUListElement | null;
     const nameHelp = document.getElementById('rsvp-name-help');
+    const thanksPanel = document.getElementById('rsvp-thanks');
+    const thanksTitle = document.getElementById('rsvp-thanks-title');
+    const thanksBody = document.getElementById('rsvp-thanks-body');
     const triggers = document.querySelectorAll('[data-rsvp-trigger]');
-    const closer = dialog.querySelector('[data-rsvp-close]');
+    const closers = dialog.querySelectorAll('[data-rsvp-close]');
 
     if (!form || !nameInput || !guestIdInput || !suggestList) return;
+
+    const showForm = () => {
+      if (thanksPanel) thanksPanel.hidden = true;
+      form.hidden = false;
+      if (feedback) {
+        feedback.textContent = '';
+        feedback.className = 'rsvp__feedback';
+      }
+    };
+
+    const showThanks = (
+      guestName: string,
+      attending: 'yes' | 'no',
+      reconfirmed: boolean,
+    ) => {
+      if (!thanksPanel || !thanksTitle || !thanksBody) return;
+      form.hidden = true;
+      thanksPanel.hidden = false;
+
+      const first = guestName.split(/\s+/)[0] || guestName;
+      thanksTitle.textContent = reconfirmed ? 'Atualizado!' : 'Obrigado!';
+
+      if (reconfirmed) {
+        thanksBody.textContent =
+          attending === 'yes'
+            ? `Atualizamos sua resposta, ${first}. Sua presença está confirmada — até 04 de julho!`
+            : `Atualizamos sua resposta, ${first}. Vamos sentir sua falta.`;
+      } else {
+        thanksBody.textContent =
+          attending === 'yes'
+            ? `Estamos ansiosos para celebrar com você, ${first}. Até 04 de julho!`
+            : `Vamos sentir sua falta, ${first}. Obrigado por avisar.`;
+      }
+    };
 
     let currentMatches: GuestMatch[] = [];
     let activeIdx = -1;
@@ -322,12 +386,13 @@
     triggers.forEach((t) =>
       t.addEventListener('click', (e) => {
         e.preventDefault();
+        showForm();
         dialog.showModal();
         window.setTimeout(() => nameInput.focus(), 50);
       }),
     );
 
-    closer?.addEventListener('click', () => dialog.close());
+    closers.forEach((c) => c.addEventListener('click', () => dialog.close()));
 
     dialog.addEventListener('click', (e) => {
       const rect = dialog.getBoundingClientRect();
@@ -384,31 +449,24 @@
           body: JSON.stringify(data),
         });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const payload = (await res.json().catch(() => ({}))) as { guest?: { name?: string } };
+        const payload = (await res.json().catch(() => ({}))) as {
+          guest?: { name?: string };
+          reconfirmed?: boolean;
+        };
         const guestName = payload?.guest?.name || 'você';
-        if (feedback) {
-          feedback.textContent =
-            data.attending === 'yes'
-              ? `Obrigado, ${guestName}! Sua presença está confirmada.`
-              : 'Anotamos, sentiremos sua falta — obrigado por avisar.';
-          feedback.className = 'rsvp__feedback is-ok';
-        }
+        const reconfirmed = Boolean(payload?.reconfirmed);
         form.reset();
         guestIdInput.value = '';
         setNameStatus('');
-        window.setTimeout(() => dialog.close(), 2500);
+        showThanks(guestName, data.attending as 'yes' | 'no', reconfirmed);
       } catch (err) {
         console.error('[rsvp]', err);
         if (isDev) {
           console.info('[rsvp] modo dev — payload simulado:', data);
-          if (feedback) {
-            feedback.textContent = 'Modo dev: presença simulada com sucesso.';
-            feedback.className = 'rsvp__feedback is-ok';
-          }
           form.reset();
           guestIdInput.value = '';
           setNameStatus('');
-          window.setTimeout(() => dialog.close(), 2000);
+          showThanks('você', data.attending as 'yes' | 'no', false);
         } else if (feedback) {
           feedback.textContent =
             'Não conseguimos registrar agora. Tente novamente em instantes ou avise os noivos.';

@@ -1,0 +1,331 @@
+---
+import { Image } from 'astro:assets';
+import envelope from '../assets/envelope/envelope.png';
+import florCascata from '../assets/envelope/flor-cascata.png';
+import florVertical from '../assets/envelope/flor-vertical.png';
+import { event } from '../data/content';
+
+const target = new Date(event.dateISO);
+const now = new Date();
+const diffMs = Math.max(0, target.getTime() - now.getTime());
+
+const totalSeconds = Math.floor(diffMs / 1000);
+const initialDays = Math.floor(totalSeconds / 86400);
+const initialHours = Math.floor((totalSeconds % 86400) / 3600);
+const initialMinutes = Math.floor((totalSeconds % 3600) / 60);
+const initialSeconds = totalSeconds % 60;
+
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<section class="countdown" id="countdown" aria-labelledby="countdown-title">
+  <div class="countdown__grid">
+    <div class="countdown__info">
+      <div class="countdown__date" aria-hidden="true">
+        <span class="countdown__date-day">04</span>
+        <span class="countdown__date-month">JULHO</span>
+        <span class="countdown__date-year">2026</span>
+      </div>
+
+      <h2 id="countdown-title" class="countdown__heading script">Faltam</h2>
+
+      <ul
+        class="countdown__list"
+        data-countdown
+        data-target={event.dateISO}
+        aria-live="polite"
+      >
+        <li class="countdown__item">
+          <span class="countdown__value" data-unit="days">{pad(initialDays)}</span>
+          <span class="countdown__label">dias</span>
+        </li>
+        <li class="countdown__item">
+          <span class="countdown__value" data-unit="hours">{pad(initialHours)}</span>
+          <span class="countdown__label">horas</span>
+        </li>
+        <li class="countdown__item">
+          <span class="countdown__value" data-unit="minutes">{pad(initialMinutes)}</span>
+          <span class="countdown__label">minutos</span>
+        </li>
+        <li class="countdown__item">
+          <span class="countdown__value" data-unit="seconds">{pad(initialSeconds)}</span>
+          <span class="countdown__label">segundos</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="countdown__art" aria-hidden="true">
+      <div class="countdown__art-inner">
+        <Image
+          src={florCascata}
+          alt=""
+          widths={[280, 420, 560]}
+          sizes="(min-width: 760px) 320px, 60vw"
+          class="countdown__flora countdown__flora--cascata"
+        />
+        <Image
+          src={envelope}
+          alt=""
+          widths={[320, 480, 640]}
+          sizes="(min-width: 760px) 360px, 70vw"
+          class="countdown__envelope"
+        />
+        <Image
+          src={florVertical}
+          alt=""
+          widths={[220, 320, 440]}
+          sizes="(min-width: 760px) 240px, 45vw"
+          class="countdown__flora countdown__flora--vertical"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .countdown {
+    background: var(--color-paper);
+    position: relative;
+    overflow: hidden;
+  }
+  .countdown::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 12% 18%, rgba(157, 139, 102, 0.06) 0%, transparent 38%),
+      radial-gradient(circle at 82% 78%, rgba(157, 139, 102, 0.05) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  .countdown__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: clamp(2rem, 6vw, 4rem);
+    align-items: center;
+    position: relative;
+    width: 100%;
+    padding-inline: 1.25rem;
+  }
+
+  .countdown__info {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .countdown__date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+    color: var(--color-forest);
+    font-family: var(--font-serif);
+    font-weight: 300;
+  }
+  .countdown__date-day {
+    font-size: clamp(2.4rem, 6vw, 3.2rem);
+    letter-spacing: 0.02em;
+  }
+  .countdown__date-month {
+    font-size: clamp(2.4rem, 6vw, 3.2rem);
+    letter-spacing: 0.08em;
+    margin-top: 0.15em;
+  }
+  .countdown__date-year {
+    font-size: clamp(1.6rem, 4vw, 2.1rem);
+    letter-spacing: 0.06em;
+    color: var(--color-forest-dark);
+    margin-top: 0.2em;
+    opacity: 0.92;
+  }
+
+  .countdown__heading {
+    color: var(--color-burgundy);
+    font-size: clamp(2.4rem, 6vw, 3.4rem);
+    line-height: 1;
+    margin-top: 0.25rem;
+  }
+
+  .countdown__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 9rem;
+  }
+  .countdown__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding-block: 0.55rem 0.7rem;
+    border-bottom: 1px solid rgba(107, 25, 34, 0.22);
+  }
+  .countdown__item:last-child { border-bottom: 0; }
+
+  .countdown__value {
+    font-family: var(--font-serif);
+    font-weight: 300;
+    font-size: clamp(2.6rem, 6.5vw, 3.4rem);
+    color: var(--color-forest);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+  .countdown__label {
+    font-family: var(--font-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-size: 0.72rem;
+    color: var(--color-forest-dark);
+    margin-top: 0.35rem;
+    opacity: 0.78;
+  }
+
+  .countdown__art {
+    position: relative;
+    width: 100%;
+    display: none;
+  }
+  .countdown__art-inner {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+  }
+  .countdown__envelope {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: auto;
+    z-index: 2;
+    filter: drop-shadow(0 18px 26px rgba(74, 15, 23, 0.22));
+  }
+  .countdown__flora {
+    position: absolute;
+    height: auto;
+  }
+  .countdown__flora--cascata {
+    left: -10%;
+    top: -6%;
+    width: 78%;
+    z-index: 3;
+    transform: rotate(-4deg);
+    pointer-events: none;
+  }
+  .countdown__flora--vertical {
+    right: -12%;
+    bottom: -8%;
+    width: 60%;
+    z-index: 3;
+    transform: rotate(6deg);
+    pointer-events: none;
+  }
+
+  @media (min-width: 760px) {
+    .countdown {
+      padding-block: clamp(1rem, 2vw, 2.25rem);
+    }
+    .countdown__grid {
+      grid-template-columns: minmax(16rem, auto) minmax(0, 1fr);
+      align-items: center;
+      padding-left: max(1.5rem, calc((100% - 64rem) / 2));
+      padding-right: 0;
+      gap: clamp(1.5rem, 3vw, 3rem);
+    }
+    .countdown__info {
+      align-items: flex-start;
+      text-align: left;
+      gap: 1.75rem;
+    }
+    .countdown__date { align-items: flex-start; }
+    .countdown__list { align-items: flex-start; }
+    .countdown__item { align-items: flex-start; }
+    .countdown__art {
+      display: block;
+      min-width: 0;
+      overflow: visible;
+    }
+    .countdown__art-inner {
+      width: 46rem;
+      max-width: none;
+      margin-left: 0;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .countdown__art-inner { width: 52rem; }
+  }
+
+  @media (min-width: 1600px) {
+    .countdown__art-inner { width: 58rem; }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .countdown__value { transition: opacity 0.25s ease; }
+  }
+</style>
+
+<script>
+  function setupCountdown() {
+    const root = document.querySelector<HTMLElement>('[data-countdown]');
+    if (!root) return;
+
+    const targetISO = root.dataset.target;
+    if (!targetISO) return;
+
+    const target = new Date(targetISO).getTime();
+    if (Number.isNaN(target)) return;
+
+    const els = {
+      days: root.querySelector<HTMLElement>('[data-unit="days"]'),
+      hours: root.querySelector<HTMLElement>('[data-unit="hours"]'),
+      minutes: root.querySelector<HTMLElement>('[data-unit="minutes"]'),
+      seconds: root.querySelector<HTMLElement>('[data-unit="seconds"]'),
+    };
+
+    const pad = (n: number) => String(Math.max(0, n)).padStart(2, '0');
+
+    const update = () => {
+      const diff = target - Date.now();
+      if (diff <= 0) {
+        if (els.days) els.days.textContent = '00';
+        if (els.hours) els.hours.textContent = '00';
+        if (els.minutes) els.minutes.textContent = '00';
+        if (els.seconds) els.seconds.textContent = '00';
+        return false;
+      }
+      const totalSeconds = Math.floor(diff / 1000);
+      const d = Math.floor(totalSeconds / 86400);
+      const h = Math.floor((totalSeconds % 86400) / 3600);
+      const m = Math.floor((totalSeconds % 3600) / 60);
+      const s = totalSeconds % 60;
+
+      if (els.days && els.days.textContent !== pad(d)) els.days.textContent = pad(d);
+      if (els.hours && els.hours.textContent !== pad(h)) els.hours.textContent = pad(h);
+      if (els.minutes && els.minutes.textContent !== pad(m)) els.minutes.textContent = pad(m);
+      if (els.seconds) els.seconds.textContent = pad(s);
+      return true;
+    };
+
+    update();
+    const id = window.setInterval(() => {
+      if (!update()) window.clearInterval(id);
+    }, 1000);
+
+    document.addEventListener(
+      'astro:before-swap',
+      () => window.clearInterval(id),
+      { once: true }
+    );
+  }
+
+  setupCountdown();
+  document.addEventListener('astro:after-swap', setupCountdown);
+</script>

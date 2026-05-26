@@ -1,0 +1,452 @@
+---
+import { Image } from 'astro:assets';
+import { getGiftImage, formatGiftPrice, getStoreLabel, type GiftItem } from '../data/gifts';
+import { buildPixPayload, pixQrSvg } from '../lib/pix';
+
+interface Props {
+  item: GiftItem;
+}
+
+const { item } = Astro.props;
+const image = getGiftImage(item);
+const isFun = item.kind === 'fun';
+
+const PIX_KEY = '01407010280';
+const PIX_NAME = 'RYCHEL PEREIRA';
+const PIX_CITY = 'BELEM';
+
+let pixPayload = '';
+let pixSvg = '';
+if (isFun) {
+  pixPayload = buildPixPayload({
+    key: PIX_KEY,
+    value: item.price,
+    name: PIX_NAME,
+    city: PIX_CITY,
+    txid: item.id,
+  });
+  pixSvg = await pixQrSvg(pixPayload);
+}
+
+const modalId = `pix-${item.id}`;
+---
+
+<article class="gift-card" data-kind={item.kind}>
+  <div class="gift-card__media">
+    {image ? (
+      <Image
+        src={image}
+        alt={item.title}
+        widths={[280, 420, 560]}
+        sizes="(min-width: 1024px) 22vw, (min-width: 640px) 40vw, 80vw"
+        class="gift-card__img"
+      />
+    ) : (
+      <div class="gift-card__placeholder" aria-hidden="true">
+        <svg viewBox="0 0 64 64" width="42" height="42" fill="none" stroke="currentColor" stroke-width="1.5">
+          <rect x="10" y="22" width="44" height="32" rx="2" />
+          <path d="M10 32 L54 32" />
+          <path d="M32 22 L32 14 a8 8 0 0 1 8 -8 a6 6 0 0 1 -8 8 a6 6 0 0 1 -8 -8 a8 8 0 0 1 8 8" />
+        </svg>
+        <span class="gift-card__placeholder-label">{item.title}</span>
+      </div>
+    )}
+  </div>
+
+  <div class="gift-card__body">
+    <div class="gift-card__title-wrap">
+      <h3 class="gift-card__title">{item.title}</h3>
+    </div>
+
+    {isFun ? (
+      <>
+        <p class="gift-card__price">{formatGiftPrice(item.price)}</p>
+        <button
+          type="button"
+          class="gift-card__action"
+          data-pix-open={modalId}
+        >
+          Presentear via Pix
+        </button>
+      </>
+    ) : (
+      <a
+        class="gift-card__action"
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Ver na {getStoreLabel(item.url)}
+        <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+          <path d="M6 2 H14 V10" />
+          <path d="M14 2 L6 10" />
+          <path d="M11 9 V13 H3 V5 H7" />
+        </svg>
+      </a>
+    )}
+  </div>
+
+  {isFun && (
+    <dialog class="pix-modal" id={modalId} aria-labelledby={`${modalId}-title`}>
+      <form method="dialog" class="pix-modal__close-form">
+        <button type="submit" class="pix-modal__close" aria-label="Fechar">
+          <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 3 L13 13 M13 3 L3 13" />
+          </svg>
+        </button>
+      </form>
+      <div class="pix-modal__content">
+        <p class="pix-modal__eyebrow">Presente via Pix</p>
+        <h4 class="pix-modal__title" id={`${modalId}-title`}>{item.title}</h4>
+        <p class="pix-modal__value">{formatGiftPrice(item.price)}</p>
+
+        <div class="pix-modal__qr" set:html={pixSvg} />
+
+        <p class="pix-modal__hint">
+          Aponte a câmera do seu app de banco no QR Code
+        </p>
+
+        <div class="pix-modal__copy-block">
+          <label class="pix-modal__copy-label" for={`${modalId}-payload`}>
+            Ou copie o Pix Copia e Cola
+          </label>
+          <div class="pix-modal__copy-row">
+            <input
+              id={`${modalId}-payload`}
+              class="pix-modal__payload"
+              type="text"
+              readonly
+              value={pixPayload}
+            />
+            <button
+              type="button"
+              class="pix-modal__copy"
+              data-pix-copy={`${modalId}-payload`}
+            >
+              Copiar
+            </button>
+          </div>
+        </div>
+
+        <p class="pix-modal__recipient">
+          Recebedor: {PIX_NAME} · CPF 014.070.102-80
+        </p>
+      </div>
+    </dialog>
+  )}
+</article>
+
+<style>
+  .gift-card {
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 6px 20px -10px rgba(74, 15, 23, 0.18), 0 1px 2px rgba(0, 0, 0, 0.04);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .gift-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px -14px rgba(74, 15, 23, 0.28), 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .gift-card__media {
+    background: #fff;
+    padding: 0.75rem;
+    aspect-ratio: 1 / 1;
+    border-bottom: 1px solid rgba(42, 33, 24, 0.06);
+    position: relative;
+  }
+  .gift-card__img {
+    position: absolute;
+    inset: 0.75rem;
+    width: calc(100% - 1.5rem);
+    height: calc(100% - 1.5rem);
+    object-fit: contain;
+    object-position: center;
+  }
+  .gift-card__placeholder {
+    position: absolute;
+    inset: 0.75rem;
+    border: 1px dashed rgba(42, 33, 24, 0.18);
+    color: rgba(42, 33, 24, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    padding: 0.75rem;
+    text-align: center;
+    background: var(--color-paper);
+  }
+  .gift-card__placeholder-label {
+    font-family: var(--font-serif);
+    font-size: 0.82rem;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+  }
+
+  .gift-card__body {
+    padding: 1rem 1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.55rem;
+    flex: 1;
+  }
+
+  .gift-card__title-wrap {
+    width: 100%;
+    height: 3.9em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gift-card__title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: 0.92rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    line-height: 1.3;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .gift-card__price {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    color: var(--color-burgundy);
+    letter-spacing: 0.04em;
+    margin: 0;
+  }
+
+  .gift-card__action {
+    margin-top: 0.35rem;
+    padding: 0.5rem 1.4rem;
+    border: 1px solid var(--color-burgundy);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-burgundy);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+  .gift-card__action:hover {
+    background: var(--color-burgundy);
+    color: #fff;
+    text-decoration: none;
+  }
+
+  /* ============ Pix Modal ============ */
+  .pix-modal {
+    border: 0;
+    border-radius: 12px;
+    padding: 0;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    width: min(420px, 92vw);
+    max-height: 92vh;
+    overflow: auto;
+    margin: auto;
+    box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.4), 0 12px 20px -10px rgba(0, 0, 0, 0.2);
+  }
+  .pix-modal::backdrop {
+    background: rgba(20, 12, 8, 0.6);
+    backdrop-filter: blur(2px);
+  }
+  .pix-modal[open] {
+    animation: pix-pop 0.22s cubic-bezier(0.2, 0.7, 0.3, 1.1);
+  }
+  @keyframes pix-pop {
+    from { opacity: 0; transform: translateY(8px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .pix-modal__close-form {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    margin: 0;
+  }
+  .pix-modal__close {
+    background: transparent;
+    border: 0;
+    color: var(--color-ink-soft);
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .pix-modal__close:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: var(--color-burgundy);
+  }
+
+  .pix-modal__content {
+    padding: 1.75rem 1.5rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .pix-modal__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.32em;
+    font-size: 0.72rem;
+    color: var(--color-ink-soft);
+    margin: 0;
+  }
+  .pix-modal__title {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 1.1rem;
+    color: var(--color-ink);
+    margin: 0.25rem 0 0;
+    line-height: 1.3;
+    max-width: 22rem;
+  }
+  .pix-modal__value {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    color: var(--color-burgundy);
+    margin: 0.15rem 0 0.75rem;
+    letter-spacing: 0.02em;
+  }
+  .pix-modal__qr {
+    background: #fff;
+    padding: 0.75rem;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 260px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  .pix-modal__qr :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .pix-modal__hint {
+    font-size: 0.88rem;
+    color: var(--color-ink-soft);
+    margin: 0.6rem 0 0;
+  }
+
+  .pix-modal__copy-block {
+    width: 100%;
+    margin-top: 1rem;
+    text-align: left;
+  }
+  .pix-modal__copy-label {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.68rem;
+    color: var(--color-ink-soft);
+    margin-bottom: 0.35rem;
+  }
+  .pix-modal__copy-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: stretch;
+  }
+  .pix-modal__payload {
+    flex: 1;
+    min-width: 0;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid rgba(42, 33, 24, 0.18);
+    border-radius: 6px;
+    background: #fff;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+    color: var(--color-ink-soft);
+  }
+  .pix-modal__copy {
+    padding: 0.55rem 0.95rem;
+    border: 1px solid var(--color-burgundy);
+    border-radius: 6px;
+    background: var(--color-burgundy);
+    color: #fff;
+    font-family: var(--font-serif);
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s ease, opacity 0.2s ease;
+  }
+  .pix-modal__copy:hover { opacity: 0.9; }
+  .pix-modal__copy[data-copied='true'] {
+    background: var(--color-forest);
+    border-color: var(--color-forest);
+  }
+
+  .pix-modal__recipient {
+    font-size: 0.78rem;
+    color: var(--color-ink-soft);
+    margin: 0.9rem 0 0;
+    opacity: 0.85;
+  }
+</style>
+
+<script>
+  function setupPixModals() {
+    document.querySelectorAll<HTMLButtonElement>('[data-pix-open]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const id = btn.dataset.pixOpen;
+        if (!id) return;
+        const modal = document.getElementById(id) as HTMLDialogElement | null;
+        modal?.showModal();
+      });
+    });
+
+    document.querySelectorAll<HTMLDialogElement>('dialog.pix-modal').forEach((dlg) => {
+      // Fecha quando clicar fora do conteúdo (no backdrop)
+      dlg.addEventListener('click', (e) => {
+        if (e.target === dlg) dlg.close();
+      });
+    });
+
+    document.querySelectorAll<HTMLButtonElement>('[data-pix-copy]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const targetId = btn.dataset.pixCopy;
+        if (!targetId) return;
+        const input = document.getElementById(targetId) as HTMLInputElement | null;
+        if (!input) return;
+        try {
+          await navigator.clipboard.writeText(input.value);
+        } catch {
+          input.select();
+          document.execCommand('copy');
+        }
+        btn.dataset.copied = 'true';
+        const original = btn.textContent;
+        btn.textContent = 'Copiado!';
+        window.setTimeout(() => {
+          btn.dataset.copied = 'false';
+          btn.textContent = original;
+        }, 1800);
+      });
+    });
+  }
+
+  setupPixModals();
+  document.addEventListener('astro:after-swap', setupPixModals);
+</script>
