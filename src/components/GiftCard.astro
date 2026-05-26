@@ -11,9 +11,9 @@ const { item } = Astro.props;
 const image = getGiftImage(item);
 const isFun = item.kind === 'fun';
 
-const PIX_KEY = '01407010280';
-const PIX_NAME = 'RYCHEL PEREIRA';
-const PIX_CITY = 'BELEM';
+const PIX_KEY = 'rychel.pereira23@gmail.com';
+const PIX_NAME = 'Rychel Teixeira Pereira';
+const PIX_CITY = 'SAO PAULO';
 
 let pixPayload = '';
 let pixSvg = '';
@@ -129,7 +129,7 @@ const modalId = `pix-${item.id}`;
         </div>
 
         <p class="pix-modal__recipient">
-          Recebedor: {PIX_NAME} · CPF 014.070.102-80
+          Recebedor: {PIX_NAME} · {PIX_KEY}
         </p>
       </div>
     </dialog>
