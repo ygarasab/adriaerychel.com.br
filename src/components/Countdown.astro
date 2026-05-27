@@ -228,24 +228,23 @@ const pad = (n: number) => String(n).padStart(2, '0');
     position: absolute;
     height: auto;
   }
-  /* Flores invertidas em relação à versão anterior:
-     - cascata agora cai do topo-direito do envelope
-     - vertical fica na base-esquerda */
+  /* Orientação conforme referência (base/Captura de tela 2026-05-26 221530.png):
+     - cascata desce do topo-esquerdo do envelope (orientação original do PNG)
+     - vertical fica embaixo, à direita */
   .countdown__flora--cascata {
-    right: -8%;
-    top: -6%;
+    left: 36%;
+    top: 40%;
     width: 70%;
     z-index: 3;
-    transform: scaleX(-1) rotate(-4deg);
     pointer-events: none;
     animation: drift-y-sm 7.5s ease-in-out infinite 0.4s;
   }
   .countdown__flora--vertical {
-    left: -10%;
-    bottom: -6%;
+    right: 49%;
+    bottom: 15%;
     width: 55%;
     z-index: 3;
-    transform: scaleX(-1) rotate(-6deg);
+    transform: rotate(-10deg);
     pointer-events: none;
     animation: drift-y-sm 8s ease-in-out infinite 1s;
   }
@@ -277,37 +276,31 @@ const pad = (n: number) => String(n).padStart(2, '0');
       order: 0;
       max-width: none;
       width: 100%;
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      justify-content: flex-end;
-      gap: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(20rem, 32rem);
+      column-gap: clamp(1.5rem, 3vw, 2.5rem);
+      align-items: start;
+      justify-items: stretch;
     }
     .countdown__date {
       align-items: flex-start;
-      padding-top: clamp(2.5rem, 6vw, 4rem);
-      flex: 0 0 auto;
-      margin-left: auto;
-      /* Sobrepõe o canto superior-esquerdo do wrap do envelope.
-         Como o wrap é quadrado e o envelope ocupa só 78% no centro,
-         empurrar a data pra dentro do wrap a aproxima visualmente do envelope. */
-      margin-right: clamp(-7rem, -6vw, -4rem);
-      position: relative;
-      z-index: 4;
+      padding-top: clamp(2rem, 5vw, 3.5rem);
+      justify-self: end;
+      margin-right: -250px;
     }
     .countdown__envelope-wrap {
-      flex: 0 0 auto;
       width: 100%;
-      max-width: 32rem;
+      max-width: none;
+      justify-self: end;
     }
   }
 
   @media (min-width: 1024px) {
-    .countdown__envelope-wrap { max-width: 36rem; }
+    .countdown__art { grid-template-columns: minmax(0, 1fr) minmax(22rem, 36rem); }
   }
 
   @media (min-width: 1280px) {
-    .countdown__envelope-wrap { max-width: 40rem; }
+    .countdown__art { grid-template-columns: minmax(0, 1fr) minmax(24rem, 40rem); }
   }
 
   @media (prefers-reduced-motion: no-preference) {

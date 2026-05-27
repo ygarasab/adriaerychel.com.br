@@ -111,7 +111,17 @@ export const giftsCopy = {
   intro: 'Sua presença é, sem dúvida, o melhor presente que poderíamos pedir. Mas se você quiser nos presentear, deixamos aqui algumas ideias. As "cotas divertidas" funcionam como contribuição em dinheiro — fica à vontade pra escolher o que faz sentido.',
   deliveryNote: {
     label: 'Endereço para entrega dos presentes',
-    cta: 'Ver no mapa',
-    url: 'https://maps.app.goo.gl/L4KRkNc8fGNoszML8',
+    street: 'Passagem Coelhinho',
+    number: '80',
+    cep: '66085-780',
+    mapUrl: 'https://maps.app.goo.gl/L4KRkNc8fGNoszML8',
+    mapCta: 'Ver no mapa',
+    copyCta: 'Copiar endereço',
+    copyCtaDone: 'Copiado!',
   },
 };
+
+export function formatDeliveryAddress(): string {
+  const d = giftsCopy.deliveryNote;
+  return `${d.street}, ${d.number} — CEP ${d.cep}`;
+}

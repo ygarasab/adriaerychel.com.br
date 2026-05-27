@@ -40,7 +40,7 @@ export const contacts = {
   rychel: {
     name: 'Rychel Pereira',
     phone: '(91) 99345-6864',
-    email: 'rychel.pereira21@gmail.com',
+    email: 'rychel.pereira23@gmail.com',
   },
   adria: {
     name: 'Adria Ferreira',

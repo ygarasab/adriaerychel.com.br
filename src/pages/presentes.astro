@@ -1,8 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import GiftCard from '../components/GiftCard.astro';
-import { gifts, giftsCopy } from '../data/gifts';
+import { gifts, giftsCopy, formatDeliveryAddress } from '../data/gifts';
 import { couple } from '../data/content';
+
+const deliveryAddress = formatDeliveryAddress();
+const delivery = giftsCopy.deliveryNote;
 ---
 
 <Layout title={`Lista de Presentes — ${couple.displayOrder.join(' & ')}`}>
@@ -19,22 +22,52 @@ import { couple } from '../data/content';
         <p class="gifts-page__intro" data-reveal data-reveal-delay="300">{giftsCopy.intro}</p>
 
         <aside class="gifts-page__delivery" data-reveal="scale" data-reveal-delay="400">
-          <span class="gifts-page__delivery-label">
-            {giftsCopy.deliveryNote.label}
-          </span>
-          <a
-            class="gifts-page__delivery-cta"
-            href={giftsCopy.deliveryNote.url}
-            target="_blank"
-            rel="noopener"
-          >
-            {giftsCopy.deliveryNote.cta}
-            <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <path d="M6 2 H14 V10" />
-              <path d="M14 2 L6 10" />
-              <path d="M11 9 V13 H3 V5 H7" />
-            </svg>
-          </a>
+          <span class="gifts-page__delivery-label">{delivery.label}</span>
+
+          <address class="gifts-page__delivery-address" data-delivery-address>
+            <span class="gifts-page__delivery-row">
+              <span class="gifts-page__delivery-key">Rua</span>
+              <span class="gifts-page__delivery-value">{delivery.street}</span>
+            </span>
+            <span class="gifts-page__delivery-row">
+              <span class="gifts-page__delivery-key">Nº</span>
+              <span class="gifts-page__delivery-value">{delivery.number}</span>
+            </span>
+            <span class="gifts-page__delivery-row">
+              <span class="gifts-page__delivery-key">CEP</span>
+              <span class="gifts-page__delivery-value">{delivery.cep}</span>
+            </span>
+          </address>
+
+          <div class="gifts-page__delivery-actions">
+            <button
+              type="button"
+              class="gifts-page__delivery-cta gifts-page__delivery-cta--copy"
+              data-copy-address={deliveryAddress}
+              data-copy-label-default={delivery.copyCta}
+              data-copy-label-done={delivery.copyCtaDone}
+            >
+              <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
+                <rect x="4.5" y="4.5" width="9" height="9" rx="1.2" />
+                <path d="M11.5 4.5 V3.2 a1 1 0 0 0 -1 -1 H3.2 a1 1 0 0 0 -1 1 v7.3 a1 1 0 0 0 1 1 H4.5" />
+              </svg>
+              <span data-copy-label>{delivery.copyCta}</span>
+            </button>
+
+            <a
+              class="gifts-page__delivery-cta"
+              href={delivery.mapUrl}
+              target="_blank"
+              rel="noopener"
+            >
+              {delivery.mapCta}
+              <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                <path d="M6 2 H14 V10" />
+                <path d="M14 2 L6 10" />
+                <path d="M11 9 V13 H3 V5 H7" />
+              </svg>
+            </a>
+          </div>
         </aside>
 
         <p class="gifts-page__back">
@@ -90,15 +123,15 @@ import { couple } from '../data/content';
   .gifts-page__delivery {
     margin: 1.75rem auto 0;
     max-width: 32rem;
-    padding: 0.9rem 1.25rem;
+    padding: 1.1rem 1.4rem 1.25rem;
     background: var(--color-cream);
     border: 1px solid rgba(74, 15, 23, 0.18);
-    border-radius: 10px;
+    border-radius: 12px;
     box-shadow: 0 6px 18px -14px rgba(74, 15, 23, 0.4);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.4rem;
+    gap: 0.85rem;
   }
   .gifts-page__delivery-label {
     font-family: var(--font-serif);
@@ -107,24 +140,70 @@ import { couple } from '../data/content';
     font-size: 0.98rem;
     letter-spacing: 0.02em;
   }
+  .gifts-page__delivery-address {
+    font-style: normal;
+    display: grid;
+    gap: 0.25rem;
+    width: 100%;
+    max-width: 22rem;
+    color: var(--color-ink);
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    text-align: left;
+  }
+  .gifts-page__delivery-row {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    align-items: baseline;
+    gap: 0.75rem;
+    padding-block: 0.15rem;
+    border-bottom: 1px solid rgba(74, 15, 23, 0.1);
+  }
+  .gifts-page__delivery-row:last-child { border-bottom: 0; }
+  .gifts-page__delivery-key {
+    font-family: var(--font-serif);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.72rem;
+    color: var(--color-ink-soft);
+  }
+  .gifts-page__delivery-value {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--color-ink);
+    letter-spacing: 0.01em;
+  }
+  .gifts-page__delivery-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+  }
   .gifts-page__delivery-cta {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    padding: 0.35rem 1rem;
+    padding: 0.45rem 1.1rem;
     border: 1px solid var(--color-burgundy);
     border-radius: 999px;
     color: var(--color-burgundy);
+    background: transparent;
     font-family: var(--font-serif);
-    font-size: 0.88rem;
+    font-size: 0.9rem;
     letter-spacing: 0.04em;
     text-decoration: none;
-    transition: background 0.2s ease, color 0.2s ease;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   }
   .gifts-page__delivery-cta:hover {
     background: var(--color-burgundy);
     color: #fff;
     text-decoration: none;
+  }
+  .gifts-page__delivery-cta[data-copied='true'] {
+    background: var(--color-forest);
+    border-color: var(--color-forest);
+    color: #fff;
   }
 
   .gifts-page__back {
@@ -163,3 +242,40 @@ import { couple } from '../data/content';
   }
 </style>
 
+<script>
+  function setupCopyDeliveryAddress() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-copy-address]');
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const text = btn.dataset.copyAddress;
+        if (!text) return;
+        try {
+          await navigator.clipboard.writeText(text);
+        } catch {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          ta.setAttribute('readonly', '');
+          ta.style.position = 'absolute';
+          ta.style.left = '-9999px';
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand('copy');
+          ta.remove();
+        }
+
+        const label = btn.querySelector<HTMLElement>('[data-copy-label]');
+        const done = btn.dataset.copyLabelDone;
+        const def = btn.dataset.copyLabelDefault;
+        btn.dataset.copied = 'true';
+        if (label && done) label.textContent = done;
+        window.setTimeout(() => {
+          btn.dataset.copied = 'false';
+          if (label && def) label.textContent = def;
+        }, 1800);
+      });
+    });
+  }
+
+  setupCopyDeliveryAddress();
+  document.addEventListener('astro:after-swap', setupCopyDeliveryAddress);
+</script>
