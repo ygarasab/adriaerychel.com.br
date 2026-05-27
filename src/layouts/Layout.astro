@@ -36,5 +36,43 @@ const {
   </head>
   <body>
     <slot />
+
+    <script>
+      function setupReveals() {
+        const elements = document.querySelectorAll<HTMLElement>('[data-reveal]');
+        if (!elements.length) return;
+
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduced || !('IntersectionObserver' in window)) {
+          elements.forEach((el) => el.classList.add('is-visible'));
+          return;
+        }
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.12, rootMargin: '0px 0px -60px 0px' }
+        );
+
+        elements.forEach((el) => {
+          // Já visíveis no primeiro paint (acima da dobra) revelam imediatamente
+          const rect = el.getBoundingClientRect();
+          if (rect.top < window.innerHeight * 0.85) {
+            el.classList.add('is-visible');
+          } else {
+            io.observe(el);
+          }
+        });
+      }
+
+      setupReveals();
+      document.addEventListener('astro:after-swap', setupReveals);
+    </script>
   </body>
 </html>

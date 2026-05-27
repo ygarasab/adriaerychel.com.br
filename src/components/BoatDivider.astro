@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import boat from '../assets/photos/IMG_2666.webp';
 ---
 
-<section class="boat" aria-hidden="true">
+<section class="boat" aria-hidden="true" data-reveal="fade">
   <Image src={boat} alt="" widths={[600, 1000, 1600]} sizes="100vw" loading="lazy" />
 </section>
 

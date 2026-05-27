@@ -8,9 +8,9 @@ import pinkLily from '../assets/flowers/pink-lily.webp';
 ---
 
 <section class="info" aria-label="Informações principais">
-  <div class="info__panel">
+  <div class="info__panel" data-reveal="scale">
     <div class="container info__grid">
-      <article class="card">
+      <article class="card" data-reveal data-reveal-delay="100">
         <h3 class="card__title">
           <Flourish width={120} class="card__flourish" />
           <span class="card__title-text">Confirme sua presença</span>
@@ -28,7 +28,7 @@ import pinkLily from '../assets/flowers/pink-lily.webp';
         </button>
       </article>
 
-      <article class="card">
+      <article class="card" data-reveal data-reveal-delay="200">
         <h3 class="card__title">
           <Flourish width={120} class="card__flourish" />
           <span class="card__title-text">Dress Code</span>
@@ -47,7 +47,7 @@ import pinkLily from '../assets/flowers/pink-lily.webp';
         <a class="card__cta" href="/dress-code">Ver detalhes</a>
       </article>
 
-      <article class="card">
+      <article class="card" data-reveal data-reveal-delay="300">
         <h3 class="card__title">
           <Flourish width={120} class="card__flourish" />
           <span class="card__title-text">Local</span>
@@ -127,6 +127,20 @@ import pinkLily from '../assets/flowers/pink-lily.webp';
     align-items: center;
     gap: 2rem;
     text-align: center;
+    transition: transform 0.4s ease;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+  }
+  .card__flower :global(img) {
+    transition: transform 0.5s ease;
+  }
+  .card:hover .card__flower :global(img) {
+    transform: translateY(-3px) rotate(1deg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card,
+    .card__flower :global(img) { transition: none; }
   }
 
   .card__title {
@@ -180,20 +194,70 @@ import pinkLily from '../assets/flowers/pink-lily.webp';
 
   .card__cta {
     margin-top: auto;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5em;
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: 0.95rem;
+    font-size: 1.02rem;
     color: var(--color-burgundy);
-    border-bottom: 1px solid var(--color-gold);
-    padding-bottom: 2px;
+    padding: 0.55rem 1.4rem;
+    border: 1px solid var(--color-burgundy);
+    border-radius: 999px;
     background: transparent;
-    transition: color 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 0 0 0 rgba(107, 25, 34, 0.22);
+    transition:
+      color 0.2s ease,
+      background 0.25s ease,
+      border-color 0.2s ease,
+      transform 0.25s ease,
+      box-shadow 0.3s ease;
+    animation: cta-pulse 2.6s ease-in-out infinite;
+  }
+  .card__cta::after {
+    content: '→';
+    display: inline-block;
+    font-style: normal;
+    transition: transform 0.25s ease;
+    animation: cta-arrow 2.6s ease-in-out infinite;
   }
   .card__cta:hover {
-    color: var(--color-burgundy-dark);
+    color: #fff;
+    background: var(--color-burgundy);
     border-color: var(--color-burgundy);
     text-decoration: none;
+    transform: translateY(-1px);
+    animation-play-state: paused;
+    box-shadow: 0 12px 22px -14px rgba(74, 15, 23, 0.45);
+  }
+  .card__cta:hover::after {
+    transform: translateX(3px);
+    animation-play-state: paused;
+  }
+  .card__cta:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
+
+  @keyframes cta-pulse {
+    0%, 100% {
+      box-shadow: 0 0 0 0 rgba(107, 25, 34, 0.28);
+      transform: translateY(0);
+    }
+    50% {
+      box-shadow: 0 0 0 8px rgba(107, 25, 34, 0);
+      transform: translateY(-2px);
+    }
+  }
+  @keyframes cta-arrow {
+    0%, 100% { transform: translateX(0); opacity: 0.7; }
+    50% { transform: translateX(4px); opacity: 1; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card__cta,
+    .card__cta::after {
+      animation: none;
+    }
   }
 
   @media (min-width: 760px) {

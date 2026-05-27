@@ -93,9 +93,65 @@ section { padding-block: clamp(3rem, 8vw, 6rem); }
   opacity: 0.5;
 }
 
+/* ============ Reveal on scroll ============
+   Aplicado via [data-reveal] + IntersectionObserver no Layout.
+   Variantes: default (up), fade, left, right, scale.
+   Stagger via data-reveal-delay="100..600" (passo de 100ms). */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 22px, 0);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.65, 0.2, 1),
+    transform 0.95s cubic-bezier(0.2, 0.65, 0.2, 1);
+  will-change: opacity, transform;
+}
+[data-reveal='fade']  { transform: none; }
+[data-reveal='left']  { transform: translate3d(-26px, 0, 0); }
+[data-reveal='right'] { transform: translate3d(26px, 0, 0); }
+[data-reveal='scale'] { transform: scale(0.94); }
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+[data-reveal-delay='100'] { transition-delay: 100ms; }
+[data-reveal-delay='200'] { transition-delay: 200ms; }
+[data-reveal-delay='300'] { transition-delay: 300ms; }
+[data-reveal-delay='400'] { transition-delay: 400ms; }
+[data-reveal-delay='500'] { transition-delay: 500ms; }
+[data-reveal-delay='600'] { transition-delay: 600ms; }
+[data-reveal-delay='700'] { transition-delay: 700ms; }
+
+/* ============ Micro motion loops ============
+   Usa a propriedade independente `translate` para compor com `transform`
+   já aplicado pelos componentes (posicionamento / scaleX). */
+@keyframes drift-y {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -7px; }
+}
+@keyframes drift-y-sm {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 0 -4px; }
+}
+@keyframes shimmer {
+  0%, 100% { filter: brightness(1); }
+  50%      { filter: brightness(1.08); }
+}
+@keyframes hero-kenburns {
+  0%   { transform: scale(1) translate(0%, 0%); }
+  100% { transform: scale(1.07) translate(-1.2%, -1.6%); }
+}
+@keyframes script-glow {
+  0%, 100% { text-shadow: 0 4px 24px rgba(0, 0, 0, 0.35); }
+  50%      { text-shadow: 0 4px 30px rgba(216, 190, 130, 0.45), 0 4px 24px rgba(0, 0, 0, 0.35); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

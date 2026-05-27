@@ -1,24 +1,27 @@
 ---
-import { Image } from 'astro:assets';
 import { faq } from '../data/faq';
-import tower from '../assets/champagne-tower.avif';
+import ChampagneTower from './ornaments/ChampagneTower.astro';
 ---
 
 <section class="faq">
   <div class="container faq__inner">
     <aside class="faq__intro">
-      <h2 class="faq__title">
+      <h2 class="faq__title" data-reveal="left">
         <span class="faq__title-line">Dúvidas</span>
         <span class="faq__title-line">Frequentes</span>
       </h2>
-      <div class="faq__art" aria-hidden="true">
-        <Image src={tower} alt="" widths={[200, 280, 360]} sizes="(max-width: 880px) 50vw, 280px" />
+      <div class="faq__art" aria-hidden="true" data-reveal data-reveal-delay="200">
+        <ChampagneTower width={320} color="var(--color-forest)" />
       </div>
     </aside>
 
     <ol class="faq__list">
       {faq.map((item, idx) => (
-        <li class="faq__item">
+        <li
+          class="faq__item"
+          data-reveal
+          style={`transition-delay: ${200 + idx * 150}ms`}
+        >
           <span class="faq__index">{String(idx + 1).padStart(2, '0')}</span>
           <h3 class="faq__question">{item.question}</h3>
           <p class="faq__answer">{item.answer}</p>
@@ -63,8 +66,9 @@ import tower from '../assets/champagne-tower.avif';
 
   .faq__art {
     max-width: clamp(220px, 26vw, 320px);
+    color: var(--color-forest);
   }
-  .faq__art :global(img) {
+  .faq__art :global(svg) {
     width: 100%;
     height: auto;
   }

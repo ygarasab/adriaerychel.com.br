@@ -21,13 +21,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 <section class="countdown" id="countdown" aria-labelledby="countdown-title">
   <div class="countdown__grid">
     <div class="countdown__info">
-      <div class="countdown__date" aria-hidden="true">
-        <span class="countdown__date-day">04</span>
-        <span class="countdown__date-month">JULHO</span>
-        <span class="countdown__date-year">2026</span>
-      </div>
-
-      <h2 id="countdown-title" class="countdown__heading script">Faltam</h2>
+      <h2 id="countdown-title" class="countdown__heading script" data-reveal>Faltam</h2>
 
       <ul
         class="countdown__list"
@@ -35,47 +29,53 @@ const pad = (n: number) => String(n).padStart(2, '0');
         data-target={event.dateISO}
         aria-live="polite"
       >
-        <li class="countdown__item">
+        <li class="countdown__item" data-reveal data-reveal-delay="100">
           <span class="countdown__value" data-unit="days">{pad(initialDays)}</span>
           <span class="countdown__label">dias</span>
         </li>
-        <li class="countdown__item">
+        <li class="countdown__item" data-reveal data-reveal-delay="200">
           <span class="countdown__value" data-unit="hours">{pad(initialHours)}</span>
           <span class="countdown__label">horas</span>
         </li>
-        <li class="countdown__item">
+        <li class="countdown__item" data-reveal data-reveal-delay="300">
           <span class="countdown__value" data-unit="minutes">{pad(initialMinutes)}</span>
           <span class="countdown__label">minutos</span>
         </li>
-        <li class="countdown__item">
+        <li class="countdown__item" data-reveal data-reveal-delay="400">
           <span class="countdown__value" data-unit="seconds">{pad(initialSeconds)}</span>
           <span class="countdown__label">segundos</span>
         </li>
       </ul>
     </div>
 
-    <div class="countdown__art" aria-hidden="true">
-      <div class="countdown__art-inner">
+    <div class="countdown__art" data-reveal="scale" data-reveal-delay="200">
+      <div class="countdown__date" aria-hidden="true">
+        <span class="countdown__date-day">04</span>
+        <span class="countdown__date-month">JULHO</span>
+        <span class="countdown__date-year">2026</span>
+      </div>
+
+      <div class="countdown__envelope-wrap" aria-hidden="true">
         <Image
-          src={florCascata}
+          src={florVertical}
           alt=""
-          widths={[280, 420, 560]}
-          sizes="(min-width: 760px) 320px, 60vw"
-          class="countdown__flora countdown__flora--cascata"
+          widths={[280, 420, 560, 820]}
+          sizes="(min-width: 760px) 280px, 40vw"
+          class="countdown__flora countdown__flora--vertical"
         />
         <Image
           src={envelope}
           alt=""
-          widths={[320, 480, 640]}
-          sizes="(min-width: 760px) 360px, 70vw"
+          widths={[420, 640, 900, 1240]}
+          sizes="(min-width: 760px) 420px, 70vw"
           class="countdown__envelope"
         />
         <Image
-          src={florVertical}
+          src={florCascata}
           alt=""
-          widths={[220, 320, 440]}
-          sizes="(min-width: 760px) 240px, 45vw"
-          class="countdown__flora countdown__flora--vertical"
+          widths={[340, 520, 760, 1100]}
+          sizes="(min-width: 760px) 360px, 60vw"
+          class="countdown__flora countdown__flora--cascata"
         />
       </div>
     </div>
@@ -87,6 +87,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     background: var(--color-paper);
     position: relative;
     overflow: hidden;
+    padding-block: clamp(2rem, 5vw, 3.5rem);
   }
   .countdown::before {
     content: '';
@@ -101,52 +102,30 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .countdown__grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: clamp(2rem, 6vw, 4rem);
+    gap: clamp(1.5rem, 4vw, 2.5rem);
     align-items: center;
+    justify-items: center;
     position: relative;
     width: 100%;
-    padding-inline: 1.25rem;
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 5vw, 2.5rem);
   }
 
   .countdown__info {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
     align-items: center;
     text-align: center;
-  }
-
-  .countdown__date {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    line-height: 1;
-    color: var(--color-forest);
-    font-family: var(--font-serif);
-    font-weight: 300;
-  }
-  .countdown__date-day {
-    font-size: clamp(2.4rem, 6vw, 3.2rem);
-    letter-spacing: 0.02em;
-  }
-  .countdown__date-month {
-    font-size: clamp(2.4rem, 6vw, 3.2rem);
-    letter-spacing: 0.08em;
-    margin-top: 0.15em;
-  }
-  .countdown__date-year {
-    font-size: clamp(1.6rem, 4vw, 2.1rem);
-    letter-spacing: 0.06em;
-    color: var(--color-forest-dark);
-    margin-top: 0.2em;
-    opacity: 0.92;
+    order: 1;
   }
 
   .countdown__heading {
     color: var(--color-burgundy);
     font-size: clamp(2.4rem, 6vw, 3.4rem);
     line-height: 1;
-    margin-top: 0.25rem;
+    margin: 0;
   }
 
   .countdown__list {
@@ -187,84 +166,148 @@ const pad = (n: number) => String(n).padStart(2, '0');
     opacity: 0.78;
   }
 
+  /* Art column: date + envelope.
+     Mobile (default): empilha date acima do envelope, ambos centralizados.
+     O envelope fica menor que no desktop. */
   .countdown__art {
     position: relative;
     width: 100%;
-    display: none;
+    max-width: 18rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    order: 2;
+    margin-inline: auto;
   }
-  .countdown__art-inner {
+
+  .countdown__date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1;
+    color: var(--color-forest);
+    font-family: var(--font-serif);
+    font-weight: 300;
+  }
+  .countdown__date-day {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    letter-spacing: 0.02em;
+  }
+  .countdown__date-month {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    letter-spacing: 0.08em;
+    margin-top: 0.15em;
+  }
+  .countdown__date-year {
+    font-size: clamp(1.2rem, 3vw, 1.7rem);
+    letter-spacing: 0.06em;
+    color: var(--color-forest-dark);
+    margin-top: 0.2em;
+    opacity: 0.92;
+  }
+
+  .countdown__envelope-wrap {
     position: relative;
     width: 100%;
     aspect-ratio: 1 / 1;
+    justify-self: end;
   }
   .countdown__envelope {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 70%;
+    width: 78%;
     height: auto;
     z-index: 2;
     filter: drop-shadow(0 18px 26px rgba(74, 15, 23, 0.22));
+    animation: drift-y 6.5s ease-in-out infinite;
   }
   .countdown__flora {
     position: absolute;
     height: auto;
   }
+  /* Flores invertidas em relação à versão anterior:
+     - cascata agora cai do topo-direito do envelope
+     - vertical fica na base-esquerda */
   .countdown__flora--cascata {
-    left: -10%;
+    right: -8%;
     top: -6%;
-    width: 78%;
+    width: 70%;
     z-index: 3;
-    transform: rotate(-4deg);
+    transform: scaleX(-1) rotate(-4deg);
     pointer-events: none;
+    animation: drift-y-sm 7.5s ease-in-out infinite 0.4s;
   }
   .countdown__flora--vertical {
-    right: -12%;
-    bottom: -8%;
-    width: 60%;
+    left: -10%;
+    bottom: -6%;
+    width: 55%;
     z-index: 3;
-    transform: rotate(6deg);
+    transform: scaleX(-1) rotate(-6deg);
     pointer-events: none;
+    animation: drift-y-sm 8s ease-in-out infinite 1s;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .countdown__envelope,
+    .countdown__flora--cascata,
+    .countdown__flora--vertical { animation: none; }
   }
 
+  /* Desktop: contador à esquerda, data + envelope à direita.
+     Grid centralizado dentro do max-width pra não ficar colado em um canto. */
   @media (min-width: 760px) {
-    .countdown {
-      padding-block: clamp(1rem, 2vw, 2.25rem);
-    }
     .countdown__grid {
-      grid-template-columns: minmax(16rem, auto) minmax(0, 1fr);
+      grid-template-columns: minmax(11rem, auto) minmax(0, 1fr);
+      column-gap: clamp(2.5rem, 6vw, 5rem);
       align-items: center;
-      padding-left: max(1.5rem, calc((100% - 64rem) / 2));
-      padding-right: 0;
-      gap: clamp(1.5rem, 3vw, 3rem);
+      justify-items: stretch;
     }
     .countdown__info {
+      order: 0;
       align-items: flex-start;
       text-align: left;
       gap: 1.75rem;
     }
-    .countdown__date { align-items: flex-start; }
     .countdown__list { align-items: flex-start; }
     .countdown__item { align-items: flex-start; }
+
     .countdown__art {
-      display: block;
-      min-width: 0;
-      overflow: visible;
-    }
-    .countdown__art-inner {
-      width: 46rem;
+      order: 0;
       max-width: none;
-      margin-left: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: flex-end;
+      gap: 0;
     }
+    .countdown__date {
+      align-items: flex-start;
+      padding-top: clamp(2.5rem, 6vw, 4rem);
+      flex: 0 0 auto;
+      margin-left: auto;
+      /* Sobrepõe o canto superior-esquerdo do wrap do envelope.
+         Como o wrap é quadrado e o envelope ocupa só 78% no centro,
+         empurrar a data pra dentro do wrap a aproxima visualmente do envelope. */
+      margin-right: clamp(-7rem, -6vw, -4rem);
+      position: relative;
+      z-index: 4;
+    }
+    .countdown__envelope-wrap {
+      flex: 0 0 auto;
+      width: 100%;
+      max-width: 32rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .countdown__envelope-wrap { max-width: 36rem; }
   }
 
   @media (min-width: 1280px) {
-    .countdown__art-inner { width: 52rem; }
-  }
-
-  @media (min-width: 1600px) {
-    .countdown__art-inner { width: 58rem; }
+    .countdown__envelope-wrap { max-width: 40rem; }
   }
 
   @media (prefers-reduced-motion: no-preference) {

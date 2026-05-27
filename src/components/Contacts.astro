@@ -12,14 +12,14 @@ function telHref(phone: string) {
 
 <section class="contacts">
   <div class="container contacts__inner">
-    <h2 class="contacts__title">
+    <h2 class="contacts__title" data-reveal>
       <span>Entre em</span>
       <span>contato</span>
     </h2>
 
     <div class="contacts__people">
-      {items.map((person) => (
-        <div class="person">
+      {items.map((person, i) => (
+        <div class="person" data-reveal style={`transition-delay: ${150 + i * 150}ms`}>
           <p class="person__name">{person.name}</p>
           <p class="person__line">
             <svg class="person__icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true">
@@ -37,7 +37,15 @@ function telHref(phone: string) {
       ))}
     </div>
 
-    <Image src={logo} alt="Adria & Rychel" class="contacts__logo" widths={[100, 160, 220]} sizes="(min-width: 900px) 110px, 130px" />
+    <Image
+      src={logo}
+      alt="Adria & Rychel"
+      class="contacts__logo"
+      widths={[100, 160, 220]}
+      sizes="(min-width: 900px) 110px, 130px"
+      data-reveal="scale"
+      data-reveal-delay="500"
+    />
   </div>
 </section>
 

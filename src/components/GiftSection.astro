@@ -10,9 +10,9 @@ import { gift } from '../data/content';
   </div>
   <div class="gift__overlay" aria-hidden="true"></div>
   <div class="container gift__content">
-    <p class="gift__title">{gift.title}</p>
-    <p class="gift__body">{gift.body}</p>
-    <a class="gift__cta" href={gift.ctaUrl}>{gift.ctaLabel}</a>
+    <p class="gift__title" data-reveal>{gift.title}</p>
+    <p class="gift__body" data-reveal data-reveal-delay="200">{gift.body}</p>
+    <a class="gift__cta" href={gift.ctaUrl} data-reveal="scale" data-reveal-delay="400">{gift.ctaLabel}</a>
   </div>
 </section>
 

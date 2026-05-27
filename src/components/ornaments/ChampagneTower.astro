@@ -1,0 +1,104 @@
+---
+interface Props {
+  width?: number | string;
+  color?: string;
+  class?: string;
+}
+const { width = 320, color = 'currentColor', class: className = '' } = Astro.props;
+---
+
+<svg
+  viewBox="0 0 260 320"
+  xmlns="http://www.w3.org/2000/svg"
+  width={width}
+  height="auto"
+  class={`champagne-tower ${className}`}
+  fill="none"
+  stroke={color}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+>
+  <defs>
+    <symbol id="ct-coupe" viewBox="-32 -4 64 86">
+      <ellipse cx="0" cy="0" rx="29" ry="6.5" stroke-width="1.35" />
+      <path d="M -29 0 Q -23 22 -6 30 Q 0 32 6 30 Q 23 22 29 0" stroke-width="1.35" />
+      <path d="M -25 1.5 Q -19 15 -3 21 Q 0 21.6 3 21 Q 19 15 25 1.5" stroke-width="0.7" opacity="0.65" />
+      <path d="M -16 4.4 Q -10 11 0 13 Q 10 11 16 4.4" stroke-width="0.45" opacity="0.4" />
+      <circle cx="-9" cy="6" r="0.95" fill={color} stroke="none" opacity="0.6" />
+      <circle cx="4" cy="11" r="0.7" fill={color} stroke="none" opacity="0.5" />
+      <circle cx="13" cy="5" r="0.6" fill={color} stroke="none" opacity="0.45" />
+      <line x1="0" y1="32" x2="0" y2="66" stroke-width="1.25" />
+      <ellipse cx="0" cy="68" rx="12" ry="2.6" stroke-width="1.25" />
+      <line x1="-12" y1="68" x2="12" y2="68" stroke-width="0.5" opacity="0.5" />
+    </symbol>
+  </defs>
+
+  <g opacity="0.7" stroke-width="0.7" fill="none">
+    <path d="M 22 36 L 28 36 M 25 33 L 25 39" />
+    <path d="M 232 60 L 238 60 M 235 57 L 235 63" />
+    <path d="M 36 248 L 42 248 M 39 245 L 39 251" opacity="0.6" />
+    <path d="M 222 264 L 228 264 M 225 261 L 225 267" opacity="0.6" />
+  </g>
+
+  <!-- ribbon bow on top -->
+  <g stroke-width="1.2">
+    <!-- knot -->
+    <path d="M 127 30 Q 130 28 133 30 Q 132 32.5 130 33 Q 128 32.5 127 30 Z" />
+    <!-- left loop -->
+    <path d="M 127 31 Q 112 26 108 36 Q 110 44 122 40 Q 128 38 130 32" />
+    <!-- right loop -->
+    <path d="M 133 31 Q 148 26 152 36 Q 150 44 138 40 Q 132 38 130 32" />
+    <!-- left tail -->
+    <path d="M 128 34 Q 124 50 119 64 L 113 60 Z" />
+    <!-- right tail -->
+    <path d="M 132 34 Q 136 50 141 64 L 147 60 Z" />
+    <!-- subtle ribbon highlight lines -->
+    <path d="M 116 32 Q 120 36 122 39" stroke-width="0.55" opacity="0.55" />
+    <path d="M 144 32 Q 140 36 138 39" stroke-width="0.55" opacity="0.55" />
+  </g>
+
+  <!-- champagne stream from above into top glass -->
+  <g stroke-width="0.9" opacity="0.75">
+    <path d="M 130 64 Q 129 76 130 84" />
+    <circle cx="130" cy="74" r="1.1" fill={color} stroke="none" opacity="0.7" />
+  </g>
+
+  <!-- top glass (row 1) -->
+  <use href="#ct-coupe" x="98" y="84" width="64" height="86" />
+
+  <!-- drips between row 1 and row 2 -->
+  <g stroke-width="0.8" opacity="0.7">
+    <path d="M 108 152 Q 106 158 104 168" />
+    <path d="M 152 152 Q 154 158 156 168" />
+    <circle cx="104" cy="168" r="0.9" fill={color} stroke="none" />
+    <circle cx="156" cy="168" r="0.9" fill={color} stroke="none" />
+  </g>
+
+  <!-- middle row (row 2) -->
+  <use href="#ct-coupe" x="64" y="162" width="64" height="86" />
+  <use href="#ct-coupe" x="132" y="162" width="64" height="86" />
+
+  <!-- drips between row 2 and row 3 -->
+  <g stroke-width="0.8" opacity="0.7">
+    <path d="M 74 232 Q 72 240 70 248" />
+    <path d="M 130 232 Q 130 240 130 248" />
+    <path d="M 186 232 Q 188 240 190 248" />
+    <circle cx="70" cy="248" r="0.9" fill={color} stroke="none" />
+    <circle cx="130" cy="248" r="0.9" fill={color} stroke="none" />
+    <circle cx="190" cy="248" r="0.9" fill={color} stroke="none" />
+  </g>
+
+  <!-- bottom row (row 3) -->
+  <use href="#ct-coupe" x="30" y="240" width="64" height="86" />
+  <use href="#ct-coupe" x="98" y="240" width="64" height="86" />
+  <use href="#ct-coupe" x="166" y="240" width="64" height="86" />
+</svg>
+
+<style>
+  .champagne-tower {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+</style>

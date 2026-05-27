@@ -9,14 +9,34 @@ import { couple } from '../data/content';
   <main class="gifts-page">
     <header class="gifts-page__header">
       <div class="container">
-        <p class="eyebrow">Rychel &amp; Adria · 04.07.2026</p>
-        <h1 class="gifts-page__heading script">{giftsCopy.heading}</h1>
-        <div class="divider-ornament">
+        <p class="eyebrow" data-reveal>Rychel &amp; Adria · 04.07.2026</p>
+        <h1 class="gifts-page__heading script" data-reveal data-reveal-delay="100">{giftsCopy.heading}</h1>
+        <div class="divider-ornament" data-reveal="fade" data-reveal-delay="200">
           <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true">
             <path d="M12 2 L13 11 L22 12 L13 13 L12 22 L11 13 L2 12 L11 11 Z" fill="currentColor" opacity="0.8" />
           </svg>
         </div>
-        <p class="gifts-page__intro">{giftsCopy.intro}</p>
+        <p class="gifts-page__intro" data-reveal data-reveal-delay="300">{giftsCopy.intro}</p>
+
+        <aside class="gifts-page__delivery" data-reveal="scale" data-reveal-delay="400">
+          <span class="gifts-page__delivery-label">
+            {giftsCopy.deliveryNote.label}
+          </span>
+          <a
+            class="gifts-page__delivery-cta"
+            href={giftsCopy.deliveryNote.url}
+            target="_blank"
+            rel="noopener"
+          >
+            {giftsCopy.deliveryNote.cta}
+            <svg viewBox="0 0 16 16" width="11" height="11" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M6 2 H14 V10" />
+              <path d="M14 2 L6 10" />
+              <path d="M11 9 V13 H3 V5 H7" />
+            </svg>
+          </a>
+        </aside>
+
         <p class="gifts-page__back">
           <a href="/">← Voltar para o convite</a>
         </p>
@@ -26,8 +46,12 @@ import { couple } from '../data/content';
     <section class="gifts-page__list">
       <div class="container">
         <ul class="gifts-grid">
-          {gifts.map((item) => (
-            <li class="gifts-grid__item">
+          {gifts.map((item, i) => (
+            <li
+              class="gifts-grid__item"
+              data-reveal
+              style={`transition-delay: ${Math.min(600, (i % 8) * 75)}ms`}
+            >
               <GiftCard item={item} />
             </li>
           ))}
@@ -61,6 +85,46 @@ import { couple } from '../data/content';
     color: var(--color-ink-soft);
     font-size: 1.02rem;
     line-height: 1.55;
+  }
+
+  .gifts-page__delivery {
+    margin: 1.75rem auto 0;
+    max-width: 32rem;
+    padding: 0.9rem 1.25rem;
+    background: var(--color-cream);
+    border: 1px solid rgba(74, 15, 23, 0.18);
+    border-radius: 10px;
+    box-shadow: 0 6px 18px -14px rgba(74, 15, 23, 0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .gifts-page__delivery-label {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-ink);
+    font-size: 0.98rem;
+    letter-spacing: 0.02em;
+  }
+  .gifts-page__delivery-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 1rem;
+    border: 1px solid var(--color-burgundy);
+    border-radius: 999px;
+    color: var(--color-burgundy);
+    font-family: var(--font-serif);
+    font-size: 0.88rem;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+  .gifts-page__delivery-cta:hover {
+    background: var(--color-burgundy);
+    color: #fff;
+    text-decoration: none;
   }
 
   .gifts-page__back {

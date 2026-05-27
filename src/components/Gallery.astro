@@ -35,6 +35,7 @@ import g3 from '../assets/photos/IMG_novafoto3.webp';
     margin: 0;
     overflow: hidden;
     aspect-ratio: 4 / 5;
+    position: relative;
   }
 
   .gallery__item img {
@@ -42,5 +43,62 @@ import g3 from '../assets/photos/IMG_novafoto3.webp';
     height: 100%;
     object-fit: cover;
     display: block;
+    transform: scale(1.12);
+    filter: brightness(0.82) saturate(0.85);
+    transition:
+      transform 1.4s cubic-bezier(0.2, 0.6, 0.2, 1),
+      filter 1.4s ease;
+    will-change: transform, filter;
+  }
+  .gallery__item.is-visible img {
+    transform: scale(1);
+    filter: brightness(1) saturate(1);
+  }
+  .gallery__item:hover img {
+    transform: scale(1.04);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gallery__item img {
+      transform: none;
+      filter: none;
+      transition: none;
+    }
   }
 </style>
+
+<script>
+  function setupGallery() {
+    const items = document.querySelectorAll<HTMLElement>('.gallery__item');
+    if (!items.length) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced || !('IntersectionObserver' in window)) {
+      items.forEach((el) => el.classList.add('is-visible'));
+      return;
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -40px 0px' }
+    );
+
+    items.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.85 && rect.bottom > 0) {
+        el.classList.add('is-visible');
+      } else {
+        io.observe(el);
+      }
+    });
+  }
+
+  setupGallery();
+  document.addEventListener('astro:after-swap', setupGallery);
+</script>

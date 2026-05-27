@@ -48,6 +48,10 @@ import { couple } from '../data/content';
     height: 100%;
     object-fit: cover;
     object-position: center 30%;
+    animation: hero-kenburns 32s ease-in-out infinite alternate;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__img { animation: none; }
   }
 
   .hero__overlay {
@@ -73,6 +77,10 @@ import { couple } from '../data/content';
     display: flex;
     flex-direction: column;
     gap: 1.25rem;
+    animation: script-glow 6s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__names { animation: none; }
   }
 
   .hero__amp {

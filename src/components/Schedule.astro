@@ -7,14 +7,18 @@ import mesa from '../assets/mesa.png';
 <section class="schedule" aria-label="Programação do evento">
   <div class="container schedule__inner">
     <div class="schedule__content">
-      <h2 class="schedule__title">
+      <h2 class="schedule__title" data-reveal="left">
         <span class="schedule__title-line">Programação</span>
         <span class="schedule__title-line schedule__title-line--small">do evento</span>
       </h2>
 
       <ol class="schedule__list">
-        {schedule.map((item) => (
-          <li class="schedule__item">
+        {schedule.map((item, i) => (
+          <li
+            class="schedule__item"
+            data-reveal="left"
+            style={`transition-delay: ${150 + i * 110}ms`}
+          >
             <span class="schedule__time">{item.time}</span>
             <span class="schedule__label">{item.title}</span>
           </li>
@@ -22,7 +26,7 @@ import mesa from '../assets/mesa.png';
       </ol>
     </div>
 
-    <div class="schedule__illustration" aria-hidden="true">
+    <div class="schedule__illustration" aria-hidden="true" data-reveal="right" data-reveal-delay="200">
       <Image src={mesa} alt="" widths={[300, 480, 720]} sizes="(max-width: 760px) 75vw, 420px" />
     </div>
   </div>
