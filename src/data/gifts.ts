@@ -1,4 +1,4 @@
-import type { ImageMetadata } from 'astro';
+import type {ImageMetadata} from 'astro';
 
 export type FunGift = {
   kind: 'fun';
@@ -89,15 +89,15 @@ export const gifts: GiftItem[] = [
   { kind: 'fun', id: 'calca-16-anos', title: 'Uma calça pra uma jovem de 16 anos', price: 300, imageKey: 'imagem-4' },
   { kind: 'link', id: 'potes-hermeticos-10', title: 'Kit 10 Potes Vidro 640ml Herméticos', url: 'https://www.mercadolivre.com.br/kit-10-potes-vidro-640ml-hermetico-tampas-4-travas-cozinha/up/MLBU3686082706' },
   { kind: 'link', id: 'xicaras-cafezinho-6', title: 'Conjunto de 6 Xícaras de Cafezinho', url: 'https://a.co/d/09dO8Psv' },
-  { kind: 'fun', id: 'lua-de-mel', title: 'Pra ajudar na lua de mel', price: 100, imageKey: 'imagem-5' },
+  { kind: 'fun', id: 'lua-de-mel', title: 'Pra ajudar na lua de mel', price: 180, imageKey: 'imagem-5' },
   { kind: 'link', id: 'pratos-rasos-oxford', title: 'Oxford Conjunto de 6 Pratos Rasos 27,5cm', url: 'https://a.co/d/02GsECMQ' },
-  { kind: 'fun', id: 'so-pra-nao-dizer', title: 'Só pra não dizer que não dei nada', price: 100, imageKey: 'imagem-6' },
+  { kind: 'fun', id: 'so-pra-nao-dizer', title: 'Só pra não dizer que não dei nada', price: 130, imageKey: 'imagem-6' },
   { kind: 'link', id: 'pratos-fundos-oxford', title: 'Conjunto com 6 Pratos Fundos Oxford 22,5cm', url: 'https://a.co/d/0aW5nN37' },
   { kind: 'link', id: 'cafeteira-philco', title: 'Cafeteira Expresso Philco PCF04A 1.2L com Aquecedor de Xícaras', url: 'https://www.mercadolivre.com.br/cafeteira-expresso-philco-pcf04a-12l-e-aquecedor-de-xicaras/up/MLBU3440347352' },
-  { kind: 'fun', id: 'taxa-pitaco', title: 'Taxa pra dar pitaco sobre a festa', price: 500, imageKey: 'imagem-7' },
+  { kind: 'fun', id: 'taxa-pitaco', title: 'Taxa pra dar pitaco sobre a festa', price: 600, imageKey: 'imagem-7' },
   { kind: 'link', id: 'batedeira-oster', title: 'Batedeira Planetária Oster Bowl Inox', url: 'https://a.co/d/03caDsQ7' },
   { kind: 'link', id: 'luminaria-chao', title: 'Luminária de Chão', url: 'https://www.mercadolivre.com.br/p/MLB51149415' },
-  { kind: 'fun', id: 'sessao-terapia', title: 'Sessão de terapia pra noiva (o noivo agradece)', price: 200, imageKey: 'imagem-8' },
+  { kind: 'fun', id: 'sessao-terapia', title: 'Sessão de terapia pra noiva (o noivo agradece)', price: 250, imageKey: 'imagem-8' },
   { kind: 'link', id: 'vinho-velhotes', title: 'Vinho Tinto Português Velhotes Ruby 750ml', url: 'https://www.mercadolivre.com.br/vinho-tinto-portugues-velhotes-ruby-750ml-porto-calem/up/MLBU3806044975' },
   { kind: 'link', id: 'pillow-top-casal', title: 'Casa W Premium Pillow Top Protector Casal Branco', url: 'https://www.mercadolivre.com.br/casa-w-premium-pillow-top-protector-casal-branco-190x140cm/p/MLB22869146' },
   { kind: 'fun', id: 'convidado-nao-convida', title: 'Cota pra levar alguém que não foi convidado', price: 3000, imageKey: 'imagem-9' },
