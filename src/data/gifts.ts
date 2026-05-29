@@ -102,7 +102,7 @@ export const gifts: GiftItem[] = [
   { kind: 'link', id: 'pillow-top-casal', title: 'Casa W Premium Pillow Top Protector Casal Branco', url: 'https://www.mercadolivre.com.br/casa-w-premium-pillow-top-protector-casal-branco-190x140cm/p/MLB22869146' },
   { kind: 'fun', id: 'convidado-nao-convida', title: 'Cota pra levar alguém que não foi convidado', price: 3000, imageKey: 'imagem-9' },
   { kind: 'link', id: 'kit-toalhas-banho', title: 'Kit Toalhas de Banho', url: 'https://www.riachuelo.com.br/produto/kit-toalha-de-banho-2-pecas-eloa-linha-multicor-buddemeyer-KIT840398' },
-  { kind: 'fun', id: 'racao-pets', title: 'Ajuda para a ração dos nossos Pets', price: 100, imageKey: 'imagem-10' },
+  { kind: 'fun', id: 'racao-pets', title: 'Ajuda para a ração dos nossos Pets', price: 170, imageKey: 'imagem-10' },
   { kind: 'link', id: 'kit-colcha-cama', title: 'Kit Colcha de Cama Dupla Face', url: 'https://www.riachuelo.com.br/kit-colcha-boutis-dupla-face-casa-riachuelo-15943275_sku_sku_casal_rosa-claro' },
 ];
 
