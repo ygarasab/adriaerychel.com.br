@@ -11,7 +11,7 @@ export const hotels: Hotel[] = [
     phone: '(91) 9955-4528',
   },
   {
-    name: 'Hotel Pousada Muriti',
+    name: 'Hotel Pousada Miriti',
     address: 'Tv. Marquês de Pombal, 2 — Aldeia',
     phone: '(91) 8114-0085',
   },
