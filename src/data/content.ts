@@ -31,7 +31,7 @@ export const welcome = {
 
 export const gift = {
   title: 'Sua presença é, sem dúvida, o melhor presente que poderíamos pedir.',
-  body: 'Mas se você se sente inspirado(a) a nos presentear com algo, criamos uma pequena lista de presentes com alguns dos itens mais desejados que aqui neste link. Alternativamente, se prefere nos apoiar nesse início de vida de casados, uma contribuição para o nosso futuro será muito importante para nós. Obrigado por fazer parte deste momento tão importante conosco.',
+  body: 'Mas se você se sente inspirado(a) a nos presentear com algo, criamos uma pequena lista de presentes com alguns dos itens mais desejados aqui neste link. Alternativamente, se prefere nos apoiar nesse início de vida de casados, uma contribuição para o nosso futuro será muito importante para nós. Obrigado por fazer parte deste momento tão importante conosco.',
   ctaLabel: 'Ver lista de presentes',
   ctaUrl: '/presentes',
 };
